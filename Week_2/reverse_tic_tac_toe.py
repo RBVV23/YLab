@@ -12,17 +12,25 @@ def display_board(board_list):
     """Prints the game board."""
     for y in range(SIZE_BOARD):
         for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
-            print(board_list[x], end=' | ')
+            print(''.format(board_list[x]), end=' | ')
         print(board_list[(y+1)*SIZE_BOARD-1])
         print('- | '*(SIZE_BOARD-1), end='')
         print('-')
 
-
-    print(board_list[8] + ' | ' + board_list[7] + ' | ' + board_list[6])
-    print('- | - | -')
-    print(board_list[5] + ' | ' + board_list[4] + ' | ' + board_list[3])
-    print('- | - | -')
-    print(board_list[0] + ' | ' + board_list[1] + ' | ' + board_list[2])
+    width = 3
+    for num in range(5, 12):
+        print('{:>{width}}'.format(num, width=width), end=' ')
+    print()
+    for num in range(5, 12):
+        print('{:<{width}}'.format(num, width=4), end=' ')
+    print()
+    for num in range(5, 12):
+        print('{:^{width}}'.format(num, width=5), end=' ')
+    # print(board_list[8] + ' | ' + board_list[7] + ' | ' + board_list[6])
+    # print('- | - | -')
+    # print(board_list[5] + ' | ' + board_list[4] + ' | ' + board_list[3])
+    # print('- | - | -')
+    # print(board_list[0] + ' | ' + board_list[1] + ' | ' + board_list[2])
 
 display_board(PLAY_BOARD)
 
