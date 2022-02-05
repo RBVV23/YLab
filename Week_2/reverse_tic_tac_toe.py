@@ -7,16 +7,24 @@ SIZE_BOARD = 10
 LOOSE_CONDITION = 5
 PLAY_BOARD = [str(num) for num in range(1, 1+SIZE_BOARD**2)]
 PLAYERS_MARKS = ['X', 'O']
-print(SIZE_BOARD**2+1)
 
 def display_board(board_list):
     """Prints the game board."""
+    for y in range(SIZE_BOARD):
+        for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
+            print(board_list[x], end=' | ')
+        print(board_list[(y+1)*SIZE_BOARD-1])
+        print('- | '*(SIZE_BOARD-1), end='')
+        print('-')
+
+
     print(board_list[8] + ' | ' + board_list[7] + ' | ' + board_list[6])
     print('- | - | -')
     print(board_list[5] + ' | ' + board_list[4] + ' | ' + board_list[3])
     print('- | - | -')
     print(board_list[0] + ' | ' + board_list[1] + ' | ' + board_list[2])
 
+display_board(PLAY_BOARD)
 
 def player_input():
     """Gets player's input string to choose the game mark to play."""
@@ -111,30 +119,30 @@ def check_game_finish(board, mark):
 
     return False
 
-
-print('Welcome to Tic Tac Toe!')
-
-PLAYER_MARKS = player_input()
-CURRENT_PLAYER_MARK = choose_first()
-
-print(f'Player with mark "{CURRENT_PLAYER_MARK}" goes first.')
-
-while True:
-    display_board(PLAY_BOARD)
-
-    print(f'Turn of the player with the mark "{CURRENT_PLAYER_MARK}":')
-
-    PLAYER_POSITION = player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
-    place_marker(PLAY_BOARD, CURRENT_PLAYER_MARK, PLAYER_POSITION)
-
-    if check_game_finish(PLAY_BOARD, CURRENT_PLAYER_MARK):
-        display_board(PLAY_BOARD)
-        if not replay():
-            break
-        else:
-            PLAY_BOARD = [str(num) for num in range(1, 10)]
-            PLAYER_MARKS = player_input()
-            CURRENT_PLAYER_MARK = choose_first()
-    else:
-        CURRENT_PLAYER_MARK = switch_player(CURRENT_PLAYER_MARK)
-    clear_screen()
+#
+# print('Welcome to Tic Tac Toe!')
+#
+# PLAYER_MARKS = player_input()
+# CURRENT_PLAYER_MARK = choose_first()
+#
+# print(f'Player with mark "{CURRENT_PLAYER_MARK}" goes first.')
+#
+# while True:
+#     display_board(PLAY_BOARD)
+#
+#     print(f'Turn of the player with the mark "{CURRENT_PLAYER_MARK}":')
+#
+#     PLAYER_POSITION = player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
+#     place_marker(PLAY_BOARD, CURRENT_PLAYER_MARK, PLAYER_POSITION)
+#
+#     if check_game_finish(PLAY_BOARD, CURRENT_PLAYER_MARK):
+#         display_board(PLAY_BOARD)
+#         if not replay():
+#             break
+#         else:
+#             PLAY_BOARD = [str(num) for num in range(1, 10)]
+#             PLAYER_MARKS = player_input()
+#             CURRENT_PLAYER_MARK = choose_first()
+#     else:
+#         CURRENT_PLAYER_MARK = switch_player(CURRENT_PLAYER_MARK)
+#     clear_screen()
