@@ -15,7 +15,7 @@ width = 2*log10(SIZE_BOARD)+2
 print(f'width = {width}')
 print(f'cell_border = {cell_border}')
 
-def display_board(board_list):
+def my_display_board(board_list):
     """Prints the game board."""
     width = 4
 
@@ -30,22 +30,22 @@ def display_board(board_list):
         print(f'{mstr:^{width}}')
 
 
-display_board(PLAY_BOARD)
+my_display_board(PLAY_BOARD)
 
-def player_input(player_marks=PLAYERS_MARKS):
+def my_player_input():
     """Gets player's input string to choose the game mark to play."""
     player_first = ''
-    while player_first not in player_marks:
-        player_first = input(f'Please, choose your marker: {player_marks[0]} or {player_marks[1]}: ').upper()
+    while player_first not in PLAYERS_MARKS:
+        player_first = input(f'Please, choose your marker: {PLAYERS_MARKS[0]} or {PLAYERS_MARKS[1]}: ').upper()
 
-    if player_first == player_marks[0]:
-        player_second = player_marks[1]
+    if player_first == PLAYERS_MARKS[0]:
+        player_second = PLAYERS_MARKS[1]
     else:
-        player_second = player_marks[0]
+        player_second = PLAYERS_MARKS[0]
 
     return player_first, player_second
 
-player_input()
+my_player_input()
 
 def place_marker(board, marker, position):
     """Puts a player mark to appropriate position."""
@@ -62,9 +62,9 @@ def win_check(board, mark):
            (board[2] == board[3] == board[6] == mark)
 
 
-def choose_first(player_marks=PLAYERS_MARKS):
+def my_choose_first():
     """Randomly returns the player's mark that goes first."""
-    return player_marks[random.choice((0, 1))]
+    return PLAYERS_MARKS[random.choice((0, 1))]
 
 
 def space_check(board, position):
