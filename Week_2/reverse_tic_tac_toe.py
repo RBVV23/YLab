@@ -10,13 +10,20 @@ PLAYERS_MARKS = ['X', 'O']
 
 def display_board(board_list):
     """Prints the game board."""
-    for y in range(SIZE_BOARD):
-        for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
-            print(''.format(board_list[x]), end=' | ')
-        print(board_list[(y+1)*SIZE_BOARD-1])
-        print('- | '*(SIZE_BOARD-1), end='')
-        print('-')
+    for i in range(10):
+        print(f'{i}', end = ' | ')
+    print()
+    for i in range(100,110):
+        print(f'{i}', end = ' | ')
 
+    # for y in range(SIZE_BOARD):
+    #     for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
+    #         print('{:}'.format(board_list[x]), end=' | ')
+    #     print(board_list[(y+1)*SIZE_BOARD-1])
+    #     print('- | '*(SIZE_BOARD-1), end='')
+    #     print('-')
+    print()
+    print()
     width = 3
     for num in range(5, 12):
         print('{:>{width}}'.format(num, width=width), end=' ')
