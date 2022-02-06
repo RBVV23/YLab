@@ -12,6 +12,7 @@ PLAYERS_MARKS = ['X', 'O']
 
 cell_border = '-'*ceil(2*log10(SIZE_BOARD))
 width = 2*log10(SIZE_BOARD)+2
+
 print(f'width = {width}')
 print(f'cell_border = {cell_border}')
 
