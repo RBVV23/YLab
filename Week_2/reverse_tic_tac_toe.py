@@ -32,16 +32,16 @@ def display_board(board_list):
 
 display_board(PLAY_BOARD)
 
-def player_input(marks=PLAYERS_MARKS):
+def player_input(player_marks=PLAYERS_MARKS):
     """Gets player's input string to choose the game mark to play."""
     player_first = ''
-    while player_first not in marks:
-        player_first = input(f'Please, choose your marker: {marks[0]} or {marks[1]}: ').upper()
+    while player_first not in player_marks:
+        player_first = input(f'Please, choose your marker: {player_marks[0]} or {player_marks[1]}: ').upper()
 
-    if player_first == marks[0]:
-        player_second = marks[1]
+    if player_first == player_marks[0]:
+        player_second = player_marks[1]
     else:
-        player_second = marks[0]
+        player_second = player_marks[0]
 
     return player_first, player_second
 
