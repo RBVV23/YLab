@@ -10,25 +10,30 @@ PLAY_BOARD = [str(num) for num in range(1, 1+SIZE_BOARD**2)]
 PLAYERS_MARKS = ['X', 'O']
 
 
-cell_border = '-'*ceil(2*log10(SIZE_BOARD))
-width = 2*log10(SIZE_BOARD)+2
-
-print(f'width = {width}')
-print(f'cell_border = {cell_border}')
+CELL_BOARD = '-'*ceil(2*log10(SIZE_BOARD))
+CELL_WIDTH = int(2*log10(SIZE_BOARD)+2)
+print(f'width = {CELL_WIDTH}')
+print(f'cell_border = {CELL_BOARD}')
 
 def my_display_board(board_list):
     """Prints the game board."""
-    width = 4
-
-    mstr = '--'
+    # width = 4
+    #
+    # mstr = '--'
 
     for y in range(SIZE_BOARD):
         for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
-            print(f'{board_list[x]:^{width}}', end='|')
-        print(f'{board_list[(y+1)*SIZE_BOARD-1]:^{width}}')
-        for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
-            print(f'{mstr:^{width}}', end='|')
-        print(f'{mstr:^{width}}')
+            if x != (y+1)*SIZE_BOARD-2:
+                print(f'{board_list[x]:^{CELL_WIDTH}}', end='|')
+            else:
+                print(f'{board_list[(y+1)*SIZE_BOARD-1]:^{CELL_WIDTH}}')
+        if y != (SIZE_BOARD-1):
+            for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
+                if x != (y+1)*SIZE_BOARD-2:
+                    print(f'{CELL_BOARD:^{CELL_WIDTH}}', end='|')
+                else:
+                    print(f'{CELL_BOARD:^{CELL_WIDTH}}')
+
 
 
 my_display_board(PLAY_BOARD)
