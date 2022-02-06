@@ -2,19 +2,22 @@
 Tic-Tac-Toe game.
 """
 import random
-from math import log10
+from math import log10, ceil
 
 SIZE_BOARD = 10
 LOOSE_CONDITION = 5
 PLAY_BOARD = [str(num) for num in range(1, 1+SIZE_BOARD**2)]
 PLAYERS_MARKS = ['X', 'O']
 
-lgg = 2*log10(SIZE_BOARD)
-print(f'lgg = {lgg}')
+
+cell_border = '-'*ceil(2*log10(SIZE_BOARD))
+width = 2*log10(SIZE_BOARD)+2
+print(f'width = {width}')
+print(f'cell_border = {cell_border}')
 
 def display_board(board_list):
     """Prints the game board."""
-    width = 6
+    width = 4
     # for i in range(10):
     #     print(f'{i*10:^{width}}', end = ' | ')
     # print()
