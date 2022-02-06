@@ -9,35 +9,29 @@ LOOSE_CONDITION = 5
 PLAY_BOARD = [str(num) for num in range(1, 1+SIZE_BOARD**2)]
 PLAYERS_MARKS = ['X', 'O']
 
-width = log10(SIZE_BOARD)
-print(width)
+lgg = 2*log10(SIZE_BOARD)
+print(f'lgg = {lgg}')
 
 def display_board(board_list):
     """Prints the game board."""
-    width = 3
+    width = 6
     # for i in range(10):
     #     print(f'{i*10:^{width}}', end = ' | ')
     # print()
     # for i in range(100,110):
     #     print(f'{i}', end = ' | ')
+    mstr = '--'
 
     for y in range(SIZE_BOARD):
         for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
-            print(f'{board_list[x]:^{width}}', end=' | ')
-        print(board_list[(y+1)*SIZE_BOARD-1])
-        print('- | '*(SIZE_BOARD-1), end='')
-        print('-')
+            print(f'{board_list[x]:^{width}}', end='|')
+        print(f'{board_list[(y+1)*SIZE_BOARD-1]:^{width}}')
+        for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
+            print(f'{mstr:^{width}}', end='|')
+        print(f'{mstr:^{width}}')
     print()
     print()
-    width = 3
-    for num in range(5, 12):
-        print('{:>{width}}'.format(num, width=width), end=' ')
-    print()
-    for num in range(5, 12):
-        print('{:<{width}}'.format(num, width=4), end=' ')
-    print()
-    for num in range(5, 12):
-        print('{:^{width}}'.format(num, width=5), end=' ')
+
     # print(board_list[8] + ' | ' + board_list[7] + ' | ' + board_list[6])
     # print('- | - | -')
     # print(board_list[5] + ' | ' + board_list[4] + ' | ' + board_list[3])
