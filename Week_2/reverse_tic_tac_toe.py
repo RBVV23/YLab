@@ -84,13 +84,106 @@ def horizontal_chek(board, mark, position):
     else:
         return False
 
+def vertical_check(board, mark, position):
+    in_line = 1
 
-def vertical_chek(board, mark, cell):
-    ...
+    up_board = position % SIZE_BOARD
+    up_stop = position - SIZE_BOARD * (LOOSE_CONDITION - 1)
+    to_up = max(up_stop, up_board)
 
-def horizontal_chek(board, mark, cell):
-    ...
+    for pos in reversed(range(to_up, position, SIZE_BOARD)):  # to up
+        if board[pos] == mark:
+            in_line += 1
+            continue
+        else:
+            break
 
+    down_board = position % SIZE_BOARD + SIZE_BOARD * (SIZE_BOARD - 1)
+    down_stop = position + SIZE_BOARD * (LOOSE_CONDITION - 1)
+    to_down = min(down_stop, down_board)
+
+    for pos in range(position + SIZE_BOARD, to_down + SIZE_BOARD, SIZE_BOARD):  # to down
+        if board[pos] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+
+    if in_line >= LOOSE_CONDITION:
+        return True, in_line
+    else:
+        return False, in_line
+
+def down_right_diagonal_check(board, mark, position):
+    in_line = 1
+
+    n_column = position % SIZE_BOARD
+    n_string = position // SIZE_BOARD
+
+    left_up_stop = position - (SIZE_BOARD + 1) * (LOOSE_CONDITION - 1)
+    diagonal_back_steps = min(n_string, n_column)-1
+    left_up_board = position - (SIZE_BOARD + 1) * diagonal_back_steps
+    to_left_up = max(left_up_board, left_up_stop)
+
+    for pos in reversed(range(to_left_up, position, SIZE_BOARD+1)): # from left-up to position
+        if board[pos] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+
+    right_down_stop = position + (SIZE_BOARD + 1) * (LOOSE_CONDITION - 1)
+    diagonal_forward_steps = SIZE_BOARD - max(n_string, n_column) - 1
+    right_down_board = position + (SIZE_BOARD + 1) * diagonal_forward_steps
+    to_right_down = min(right_down_board, right_down_stop)
+
+    for pos in range(position+SIZE_BOARD+1, to_right_down+SIZE_BOARD+1, SIZE_BOARD+1): # from position to right_down
+        if board[pos] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+
+    if in_line >= LOOSE_CONDITION:
+        return True, in_line
+    else:
+        return False, in_line
+
+def up_left_diagonal_check(board, mark, position):
+    in_line = 1
+
+    n_column = position % SIZE_BOARD
+    n_string = position // SIZE_BOARD
+
+    right_up_stop = position - (SIZE_BOARD - 1) * (LOOSE_CONDITION - 1)
+    diagonal_back_steps = min(n_string, SIZE_BOARD-n_column)-1
+    right_up_board = position - (SIZE_BOARD - 1) * diagonal_back_steps
+    to_right_up = max(right_up_board, right_up_stop)
+
+    for pos in reversed(range(to_right_up, position, SIZE_BOARD - 1)):  # from right-up to position
+        if board[pos] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+
+    left_down_stop = position + (SIZE_BOARD - 1) * (LOOSE_CONDITION - 1)
+    diagonal_forward_steps = min(SIZE_BOARD-n_string, n_column) - 1
+    left_down_board = position + (SIZE_BOARD - 1) * diagonal_forward_steps
+    to_left_down = min(left_down_board, left_down_stop)
+
+    for pos in range(position + SIZE_BOARD - 1, to_left_down + SIZE_BOARD - 1,
+                     SIZE_BOARD - 1):  # from position to right_down
+        if board[pos] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+
+    if in_line >= LOOSE_CONDITION:
+        return True, in_line
+    else:
+        return False, in_line
 
 def win_check(board, mark):
     """Returns boolean value whether the player wins the game."""
