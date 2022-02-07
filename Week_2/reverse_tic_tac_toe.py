@@ -66,6 +66,8 @@ def horizontal_chek(board, mark, position):
             continue
         else:
             break
+    right_board = (position//SIZE_BOARD)*SIZE_BOARD + (SIZE_BOARD-1)
+    left_board = (position//SIZE_BOARD)*SIZE_BOARD
     for i in range(1, LOOSE_CONDITION): #right
         if board[position + i] == mark:
             in_line += 1
