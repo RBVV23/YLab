@@ -58,6 +58,30 @@ def place_marker(board, marker, position):
     board[position] = marker
 
 
+def horizontal_chek(board, mark, position):
+    in_line = 1
+    for i in range(1, LOOSE_CONDITION): #left
+        if board[position - i] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+    for i in range(1, LOOSE_CONDITION): #right
+        if board[position + i] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+
+    ...
+
+def vertical_chek(board, mark, cell):
+    ...
+
+def horizontal_chek(board, mark, cell):
+    ...
+
+
 def win_check(board, mark):
     """Returns boolean value whether the player wins the game."""
     return (board[0] == board[1] == board[2] == mark) or \
