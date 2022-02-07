@@ -17,9 +17,6 @@ print(f'cell_border = {CELL_BOARD}')
 
 def my_display_board(board_list):
     """Prints the game board."""
-    # width = 4
-    #
-    # mstr = '--'
 
     for y in range(SIZE_BOARD):
         for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD-1):
@@ -60,22 +57,33 @@ def place_marker(board, marker, position):
 
 def horizontal_chek(board, mark, position):
     in_line = 1
-    for i in range(1, LOOSE_CONDITION): #left
-        if board[position - i] == mark:
-            in_line += 1
-            continue
-        else:
-            break
-    right_board = (position//SIZE_BOARD)*SIZE_BOARD + (SIZE_BOARD-1)
-    left_board = (position//SIZE_BOARD)*SIZE_BOARD
-    for i in range(1, LOOSE_CONDITION): #right
-        if board[position + i] == mark:
+
+    left_board = (position // SIZE_BOARD) * SIZE_BOARD
+    left_stop = position - LOOSE_CONDITION + 1
+    to_left = max(left_stop, left_board)
+
+    for pos in reversed(range(to_left, position)): # to left
+        if board[pos] == mark:
             in_line += 1
             continue
         else:
             break
 
-    ...
+    right_board = (position // SIZE_BOARD) * SIZE_BOARD + (SIZE_BOARD - 1)
+    right_stop = position + LOOSE_CONDITION - 1
+    to_right = min(right_stop, right_board)
+
+    for pos in range(position+1, to_right+1): # to right
+        if board[pos] == mark:
+            in_line += 1
+            continue
+        else:
+            break
+    if in_line >= LOOSE_CONDITION:
+        return True
+    else:
+        return False
+
 
 def vertical_chek(board, mark, cell):
     ...
