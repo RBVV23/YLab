@@ -99,12 +99,12 @@ def down_right_diagonal_check(board, mark, position):
     n_string = position // SIZE_BOARD
 
     left_up_stop = position - (SIZE_BOARD + 1) * (LOOSE_CONDITION - 1)
-    diagonal_back_steps = min(n_string, n_column)-1
+    diagonal_back_steps = min(n_string, n_column)
     left_up_board = position - (SIZE_BOARD + 1) * diagonal_back_steps
     to_left_up = max(left_up_board, left_up_stop)
 
     for pos in reversed(range(to_left_up, position, SIZE_BOARD+1)): # from left-up to position
-        # print(f'\tLeft-Up: board[{pos}] = {board[pos]}')
+        print(f'\tLeft-Up: board[{pos+1}] = {board[pos]}')
         if board[pos] == mark:
             in_line += 1
             continue
@@ -117,7 +117,7 @@ def down_right_diagonal_check(board, mark, position):
     to_right_down = min(right_down_board, right_down_stop)
 
     for pos in range(position+SIZE_BOARD+1, to_right_down+SIZE_BOARD+1, SIZE_BOARD+1): # from position to right_down
-        # print(f'\tRight-Down: board[{pos}] = {board[pos]}')
+        print(f'\tRight-Down: board[{pos+1}] = {board[pos]}')
         if board[pos] == mark:
             in_line += 1
             continue
@@ -136,13 +136,13 @@ def up_left_diagonal_check(board, mark, position):
     n_string = position // SIZE_BOARD
 
     right_up_stop = position - (SIZE_BOARD - 1) * (LOOSE_CONDITION - 1)
-    diagonal_back_steps = min(n_string, SIZE_BOARD-n_column)-1
+    diagonal_back_steps = min(n_string, SIZE_BOARD-n_column-1)
     right_up_board = position - (SIZE_BOARD - 1) * diagonal_back_steps
     to_right_up = max(right_up_board, right_up_stop)
     # print(f'to_right_up = {to_right_up}')
 
     for pos in reversed(range(to_right_up, position, SIZE_BOARD - 1)):  # from right-up to position
-        # print(f'\tRight-Up: board[{pos}] = {board[pos]}')
+        print(f'\tRight-Up: board[{pos+1}] = {board[pos]}')
         if board[pos] == mark:
             in_line += 1
             continue
@@ -151,7 +151,7 @@ def up_left_diagonal_check(board, mark, position):
 
     left_down_stop = position + (SIZE_BOARD - 1) * (LOOSE_CONDITION - 1)
     # print(f'left_down_stop = {left_down_stop}')
-    diagonal_forward_steps = min(SIZE_BOARD-n_string, n_column) - 1
+    diagonal_forward_steps = min(SIZE_BOARD-n_string-1, n_column)
     left_down_board = position + (SIZE_BOARD - 1) * diagonal_forward_steps
     # print(f'left_down_board = {left_down_board}')
     to_left_down = min(left_down_board, left_down_stop)
@@ -159,7 +159,7 @@ def up_left_diagonal_check(board, mark, position):
 
     for pos in range(position + SIZE_BOARD - 1, to_left_down + SIZE_BOARD - 1,
                      SIZE_BOARD - 1):  # from position to right_down
-        # print(f'\tLeft-Down: board[{pos}] = {board[pos]}')
+        print(f'\tLeft-Down: board[{pos+1}] = {board[pos]}')
         if board[pos] == mark:
             in_line += 1
             continue
@@ -349,9 +349,9 @@ def my_player_choice(board, player_mark):
 
     position -= 1
     if space_check(board, position):
-        return position
+        return position, True
 
-    return False
+    return -1, False
 
 
 def check_game_finish(board, mark, position):
@@ -382,25 +382,28 @@ while True:
     print(f'Turn of the player with the mark "{CURRENT_PLAYER_MARK}":')
 
     if CURRENT_PLAYER:
-        print('PC ходит')
+        # print('PC ходит')
         POSITION = computer_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
     else:
-        print('Ходит НЕчеловек')
+        # print('Ходит человек')
         # POSITION = computer_choice(PLAY_BOARD, marker)
-        POSITION = my_player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
+        POSITION, check = my_player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
+        while not check:
+            print(f'Player "{CURRENT_PLAYER_MARK}", this position is not empty! Try again!')
+            POSITION, check = my_player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
 
     place_marker(PLAY_BOARD, CURRENT_PLAYER_MARK, POSITION)
 
     if check_game_finish(PLAY_BOARD, CURRENT_PLAYER_MARK, POSITION):
         my_display_board(PLAY_BOARD)
-        if not True:
+        # if not True:
         if not replay():
             break
         else:
+            clear_screen()
             PLAY_BOARD = [str(num) for num in range(1, 1 + SIZE_BOARD ** 2)]
             PLAYER_MARKS = my_player_input()
             CURRENT_PLAYER, CURRENT_PLAYER_MARK = choose_first()
     else:
         CURRENT_PLAYER, CURRENT_PLAYER_MARK = switch_player(CURRENT_PLAYER, CURRENT_PLAYER_MARK)
-
-    clear_screen()
+    # clear_screen()
