@@ -55,7 +55,7 @@ def place_marker(board, marker, position):
     board[position] = marker
 
 
-def horizontal_chek(board, mark, position):
+def my_horizontal_chek(board, mark, position):
     in_line = 1
 
     left_board = (position // SIZE_BOARD) * SIZE_BOARD
@@ -84,7 +84,7 @@ def horizontal_chek(board, mark, position):
     else:
         return False
 
-def vertical_check(board, mark, position):
+def my_vertical_check(board, mark, position):
     in_line = 1
 
     up_board = position % SIZE_BOARD
@@ -114,7 +114,7 @@ def vertical_check(board, mark, position):
     else:
         return False, in_line
 
-def down_right_diagonal_check(board, mark, position):
+def my_down_right_diagonal_check(board, mark, position):
     in_line = 1
 
     n_column = position % SIZE_BOARD
@@ -149,7 +149,7 @@ def down_right_diagonal_check(board, mark, position):
     else:
         return False, in_line
 
-def up_left_diagonal_check(board, mark, position):
+def my_up_left_diagonal_check(board, mark, position):
     in_line = 1
 
     n_column = position % SIZE_BOARD
@@ -185,14 +185,18 @@ def up_left_diagonal_check(board, mark, position):
     else:
         return False, in_line
 
-def win_check(board, mark):
-    """Returns boolean value whether the player wins the game."""
-    return (board[0] == board[1] == board[2] == mark) or \
-           (board[5] == board[4] == board[3] == mark) or \
-           (board[8] == board[7] == board[6] == mark) or \
-           (board[0] == board[5] == board[8] == mark) or \
-           (board[1] == board[4] == board[7] == mark) or \
-           (board[2] == board[3] == board[6] == mark)
+def my_loose_check(board, mark, position):
+    # """Returns boolean value whether the player wins the game."""
+    if my_horizontal_chek(board, mark, position):
+        return True
+    elif my_vertical_check():
+        return True
+    elif my_down_right_diagonal_check():
+        return True
+    elif my_up_left_diagonal_check():
+        return True
+    else:
+        return False
 
 
 def my_choose_first():
@@ -208,6 +212,7 @@ def space_check(board, position):
 def full_board_check(board):
     """Returns boolean value whether the game board is full of game marks."""
     return len(set(board)) == 2
+
 
 
 def player_choice(board, player_mark):
@@ -244,7 +249,7 @@ def clear_screen():
 
 def switch_player(mark):
     """Switches player's marks to play next turn."""
-    return 'O' if mark == 'X' else 'X'
+    return PLAYERS_MARKS[0] if mark == PLAYERS_MARKS[1] else PLAYERS_MARKS[0]
 
 
 def check_game_finish(board, mark):
