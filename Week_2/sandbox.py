@@ -102,6 +102,7 @@ def down_right_diagonal_check(board, mark, position):
     diagonal_back_steps = min(n_string, n_column)
     left_up_board = position - (SIZE_BOARD + 1) * diagonal_back_steps
     to_left_up = max(left_up_board, left_up_stop)
+    print(f'to_left_up = ', to_left_up)
 
     for pos in reversed(range(to_left_up, position, SIZE_BOARD+1)): # from left-up to position
         print(f'\tLeft-Up: board[{pos+1}] = {board[pos]}')
@@ -115,6 +116,7 @@ def down_right_diagonal_check(board, mark, position):
     diagonal_forward_steps = SIZE_BOARD - max(n_string, n_column) - 1
     right_down_board = position + (SIZE_BOARD + 1) * diagonal_forward_steps
     to_right_down = min(right_down_board, right_down_stop)
+    print(f'to_right_down = {to_right_down}')
 
     for pos in range(position+SIZE_BOARD+1, to_right_down+SIZE_BOARD+1, SIZE_BOARD+1): # from position to right_down
         print(f'\tRight-Down: board[{pos+1}] = {board[pos]}')
@@ -139,7 +141,7 @@ def up_left_diagonal_check(board, mark, position):
     diagonal_back_steps = min(n_string, SIZE_BOARD-n_column-1)
     right_up_board = position - (SIZE_BOARD - 1) * diagonal_back_steps
     to_right_up = max(right_up_board, right_up_stop)
-    # print(f'to_right_up = {to_right_up}')
+    print(f'to_right_up = {to_right_up}')
 
     for pos in reversed(range(to_right_up, position, SIZE_BOARD - 1)):  # from right-up to position
         print(f'\tRight-Up: board[{pos+1}] = {board[pos]}')
@@ -155,7 +157,7 @@ def up_left_diagonal_check(board, mark, position):
     left_down_board = position + (SIZE_BOARD - 1) * diagonal_forward_steps
     # print(f'left_down_board = {left_down_board}')
     to_left_down = min(left_down_board, left_down_stop)
-    # print(f'to_left_down = {to_left_down}')
+    print(f'to_left_down = {to_left_down}')
 
     for pos in range(position + SIZE_BOARD - 1, to_left_down + SIZE_BOARD - 1,
                      SIZE_BOARD - 1):  # from position to right_down
@@ -197,7 +199,7 @@ board = ['X',  '2',  '3',  '4',  '5',  '6', '7',  '8',  '9',  'X',
          '71', '72', 'X', '74', 'X', '76', '77', 'X', '79', '80',
          '81', 'X', '83', '84', 'X', '86', '87', '88', 'X', '90',
          'X', '92', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X',]
-marker = 'X'
+# marker = 'X'
 # input_pos = 100
 # position= input_pos - 1
 
@@ -227,25 +229,13 @@ marker = 'X'
 # left_up_board = position - (SIZE_BOARD+1)*diagonal_back_steps
 # diagonal_forward_steps = SIZE_BOARD - max(n_string, n_column) - 1
 # right_down_board = position + (SIZE_BOARD+1)*diagonal_forward_steps
-#
+
 # to_left_up = max(left_up_board, left_up_stop)
 # to_right_down = min(right_down_board, right_down_stop)
 
-# print(f'n_string = {n_string}')
-# print(f'n_column = {n_column}')
-# print(f'{left_up_stop}-{right_down_stop}')
-# print(f'{left_up_board}-{right_down_board}')
-# print(f'{to_left_up}-{to_right_down}')
 
 
 
-
-# print('UP-LEFT')
-# print(up_left_diagonal_check(board, mark, position))
-# print('HORIZONTAL')
-# print(horizontal_chek(board, mark, position))
-# print('VERTICAL')
-# print(vertical_check(board, mark, position))
 
 def full_board_check(board):
     """Returns boolean value whether the game board is full of game marks."""
@@ -284,13 +274,6 @@ def place_marker(board, marker, position):
     """Puts a player mark to appropriate position."""
     board[position] = marker
 
-# for i in range(80):
-#     print(f'---------------------{i}---------------------\n')
-#     my_display_board(board)
-#     position = computer_choice(board, marker)
-#     print(f'PC-position = {position}')
-#     place_marker(board, marker, position)
-#     print()
 
 def switch_player(old_player, old_mark):
     """Switches player's marks to play next turn."""
@@ -352,8 +335,6 @@ def my_player_choice(board, player_mark):
         return position, True
 
     return -1, False
-
-
 def check_game_finish(board, mark, position):
     """Return boolean value is the game finished or not."""
     if my_loose_check(board, mark, position):
@@ -363,7 +344,6 @@ def check_game_finish(board, mark, position):
         print('The game ended in a draw.')
         return True
     return False
-
 def replay():
     """Asks the players to play again."""
     decision = ''
@@ -371,7 +351,6 @@ def replay():
         decision = input('Would you like to play again? Type "y" or "n"').lower()
 
     return decision == 'y'
-
 def clear_screen():
     """Clears the game screen via adding new rows."""
     print('\n' * 100)
@@ -381,22 +360,20 @@ while True:
 
     print(f'Turn of the player with the mark "{CURRENT_PLAYER_MARK}":')
 
-    if CURRENT_PLAYER:
-        # print('PC ходит')
+    if CURRENT_PLAYER: # ход компьютера
         POSITION = computer_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
-    else:
-        # print('Ходит человек')
-        # POSITION = computer_choice(PLAY_BOARD, marker)
-        POSITION, check = my_player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
-        while not check:
-            print(f'Player "{CURRENT_PLAYER_MARK}", this position is not empty! Try again!')
-            POSITION, check = my_player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
+    else: # ход человека
+        POSITION = computer_choice(PLAY_BOARD, HUMAN_MARK)
+        # POSITION, check = my_player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
+        # while not check:
+        #     print(f'Player "{CURRENT_PLAYER_MARK}", this position is not empty! Try again!')
+        #     POSITION, check = my_player_choice(PLAY_BOARD, CURRENT_PLAYER_MARK)
 
+    print(f'POSITION = {POSITION}')
     place_marker(PLAY_BOARD, CURRENT_PLAYER_MARK, POSITION)
 
     if check_game_finish(PLAY_BOARD, CURRENT_PLAYER_MARK, POSITION):
         my_display_board(PLAY_BOARD)
-        # if not True:
         if not replay():
             break
         else:
