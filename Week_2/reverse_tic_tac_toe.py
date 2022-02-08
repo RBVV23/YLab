@@ -8,7 +8,9 @@ from math import log10, ceil
 LOOSE_CONDITION = 5
 SIZE_BOARD = 10
 PLAY_BOARD = [str(num) for num in range(1, 1+SIZE_BOARD**2)]
-PLAYERS_MARKS = ['X', 'O']
+PLAYERS_MARKS = tuple(['X','O'])
+print(type(PLAYERS_MARKS))
+# print(\033[34m'123')
 
 CELL_BOARD = '-'*ceil(2*log10(SIZE_BOARD))
 CELL_WIDTH = int(2*log10(SIZE_BOARD)+2)
@@ -29,6 +31,7 @@ def display_board(board_list):
                     print(f'{CELL_BOARD:^{CELL_WIDTH}}', end='|')
                 else:
                     print(f'{CELL_BOARD:^{CELL_WIDTH}}')
+
 def horizontal_check(board, mark, position):
     """Returns boolean value whether a horizontal line has been collected"""
     in_line = 1
@@ -54,10 +57,9 @@ def horizontal_check(board, mark, position):
             continue
         else:
             break
-    if in_line >= LOOSE_CONDITION:
-        return True
-    else:
-        return False
+    return in_line >= LOOSE_CONDITION
+
+
 def vertical_check(board, mark, position):
     """Returns boolean value whether a vertical line has been collected"""
     in_line = 1
@@ -84,10 +86,9 @@ def vertical_check(board, mark, position):
         else:
             break
 
-    if in_line >= LOOSE_CONDITION:
-        return True
-    else:
-        return False
+    return in_line >= LOOSE_CONDITION
+
+
 def down_right_diagonal_check(board, mark, position):
     """Returns boolean value whether a down-right diagonal line has been collected"""
     in_line = 1
@@ -119,10 +120,9 @@ def down_right_diagonal_check(board, mark, position):
         else:
             break
 
-    if in_line >= LOOSE_CONDITION:
-        return True
-    else:
-        return False
+    return in_line >= LOOSE_CONDITION
+
+
 def up_left_diagonal_check(board, mark, position):
     """Returns boolean value whether a up-left diagonal line has been collected"""
     in_line = 1
@@ -154,10 +154,9 @@ def up_left_diagonal_check(board, mark, position):
         else:
             break
 
-    if in_line >= LOOSE_CONDITION:
-        return True
-    else:
-        return False
+    return in_line >= LOOSE_CONDITION
+
+
 def loose_check(board, mark, position):
     """Returns boolean value whether the player loses the game."""
     if horizontal_check(board, mark, position):
@@ -170,12 +169,15 @@ def loose_check(board, mark, position):
         return True
     else:
         return False
+
 def full_board_check(board):
     """Returns boolean value whether the game board is full of game marks."""
     return len(set(board)) == 2
+
 def space_check(board, position):
     """Returns boolean value whether the cell is free or not."""
     return board[position] not in PLAYERS_MARKS
+
 def computer_choice(board, mark):
     """Returns position of computer's move"""
     if not full_board_check(board):
@@ -193,9 +195,11 @@ def computer_choice(board, mark):
         return last_possible # случай проигрыша компьютера
     else:
         return None # случай ничейного результата
+
 def place_marker(board, marker, position):
     """Puts a player mark to appropriate position."""
     board[position] = marker
+
 def switch_player(old_player, old_mark):
     """Switches players to play next turn."""
     if old_mark == PLAYERS_MARKS[0]:
@@ -204,6 +208,7 @@ def switch_player(old_player, old_mark):
         CURRENT_MARK = PLAYERS_MARKS[0]
     CURRENT_PLAYER = not old_player
     return CURRENT_PLAYER, CURRENT_MARK
+
 def player_input():
     """Gets player's input string to choose the game mark to play."""
     HUMAN_MARK = ''
@@ -216,6 +221,7 @@ def player_input():
         PC_MARK = PLAYERS_MARKS[0]
 
     return HUMAN_MARK, PC_MARK
+
 def choose_first():
     """Randomly returns the player that goes first."""
     first_mark = PLAYERS_MARKS[random.choice((0, 1))]
@@ -223,6 +229,7 @@ def choose_first():
         return False, HUMAN_MARK
     else:
         return True, PC_MARK
+
 def player_choice(board, player_mark):
     """Gets player's next position and check if it's appropriate to play."""
     position = 0
@@ -239,6 +246,7 @@ def player_choice(board, player_mark):
         return position, True
 
     return -1, False # случай занятой клетки
+
 def check_game_finish(board, mark, position):
     """Return boolean value is the game finished or not."""
     if loose_check(board, mark, position):
@@ -248,6 +256,7 @@ def check_game_finish(board, mark, position):
         print('The game ended in a draw.')
         return True
     return False
+
 def replay():
     """Asks the players to play again."""
     decision = ''
@@ -255,6 +264,7 @@ def replay():
         decision = input('Would you like to play again? Type "y" or "n"').lower()
 
     return decision == 'y'
+
 def clear_screen():
     """Clears the game screen via adding new rows."""
     print('\n' * 100)
