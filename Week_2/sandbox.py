@@ -1,6 +1,3 @@
-"""
-Reverse Tic-Tac-Toe game.
-"""
 
 red = '\033[31m'
 blue ='\033[34m'
