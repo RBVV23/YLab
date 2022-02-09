@@ -9,15 +9,14 @@ LOOSE_CONDITION = 5
 SIZE_BOARD = 10
 PLAY_BOARD = [str(num) for num in range(1, 1+SIZE_BOARD**2)]
 PLAYERS_MARKS = tuple(['X','O'])
-print(type(PLAYERS_MARKS))
-# print(\033[34m'123')
+
 
 CELL_BOARD = '-'*ceil(2*log10(SIZE_BOARD))
 CELL_WIDTH = int(2*log10(SIZE_BOARD)+2)
 
+
 def display_board(board_list):
     """Prints the game board."""
-
     for y in range(SIZE_BOARD):
         for x in range(y*SIZE_BOARD, (y+1)*SIZE_BOARD):
             if x != (y+1)*SIZE_BOARD-1:
@@ -31,6 +30,7 @@ def display_board(board_list):
                     print(f'{CELL_BOARD:^{CELL_WIDTH}}', end='|')
                 else:
                     print(f'{CELL_BOARD:^{CELL_WIDTH}}')
+
 
 def horizontal_check(board, mark, position):
     """Returns boolean value whether a horizontal line has been collected"""
@@ -68,7 +68,8 @@ def vertical_check(board, mark, position):
     up_stop = position - SIZE_BOARD * (LOOSE_CONDITION - 1)
     to_up = max(up_stop, up_board)
 
-    for pos in reversed(range(to_up, position, SIZE_BOARD)):  # цикл для прохода снизу вверх от нового маркера
+    # цикл для прохода снизу вверх от нового маркера
+    for pos in reversed(range(to_up, position, SIZE_BOARD)):
         if board[pos] == mark:
             in_line += 1
             continue
@@ -79,7 +80,8 @@ def vertical_check(board, mark, position):
     down_stop = position + SIZE_BOARD * (LOOSE_CONDITION - 1)
     to_down = min(down_stop, down_board)
 
-    for pos in range(position + SIZE_BOARD, to_down + SIZE_BOARD, SIZE_BOARD):  # цикл для прохода сверху вниз от нового маркера
+    # цикл для прохода сверху вниз от нового маркера
+    for pos in range(position + SIZE_BOARD, to_down + SIZE_BOARD, SIZE_BOARD):
         if board[pos] == mark:
             in_line += 1
             continue
@@ -101,7 +103,8 @@ def down_right_diagonal_check(board, mark, position):
     left_up_board = position - (SIZE_BOARD + 1) * diagonal_back_steps
     to_left_up = max(left_up_board, left_up_stop)
 
-    for pos in reversed(range(to_left_up, position, SIZE_BOARD+1)): # цикл для прохода налево и вверх от нового маркера
+    # цикл для прохода налево и вверх от нового маркера
+    for pos in reversed(range(to_left_up, position, SIZE_BOARD+1)):
         if board[pos] == mark:
             in_line += 1
             continue
@@ -113,7 +116,8 @@ def down_right_diagonal_check(board, mark, position):
     right_down_board = position + (SIZE_BOARD + 1) * diagonal_forward_steps
     to_right_down = min(right_down_board, right_down_stop)
 
-    for pos in range(position+SIZE_BOARD+1, to_right_down+SIZE_BOARD+1, SIZE_BOARD+1): # цикл для прохода направо и вниз от нового маркера
+    # цикл для прохода направо и вниз от нового маркера
+    for pos in range(position+SIZE_BOARD+1, to_right_down+SIZE_BOARD+1, SIZE_BOARD+1):
         if board[pos] == mark:
             in_line += 1
             continue
@@ -135,7 +139,8 @@ def up_left_diagonal_check(board, mark, position):
     right_up_board = position - (SIZE_BOARD - 1) * diagonal_back_steps
     to_right_up = max(right_up_board, right_up_stop)
 
-    for pos in reversed(range(to_right_up, position, SIZE_BOARD - 1)):  # цикл для прохода вправо и вверх от нового маркера
+    # цикл для прохода вправо и вверх от нового маркера
+    for pos in reversed(range(to_right_up, position, SIZE_BOARD - 1)):
         if board[pos] == mark:
             in_line += 1
             continue
@@ -147,7 +152,8 @@ def up_left_diagonal_check(board, mark, position):
     left_down_board = position + (SIZE_BOARD - 1) * diagonal_forward_steps
     to_left_down = min(left_down_board, left_down_stop)
 
-    for pos in range(position + SIZE_BOARD - 1, to_left_down + SIZE_BOARD - 1, SIZE_BOARD - 1):  # цикл для прохода налево и вниз от нового маркера
+    # цикл для прохода налево и вниз от нового маркера
+    for pos in range(position + SIZE_BOARD - 1, to_left_down + SIZE_BOARD - 1, SIZE_BOARD - 1):
         if board[pos] == mark:
             in_line += 1
             continue
@@ -159,24 +165,21 @@ def up_left_diagonal_check(board, mark, position):
 
 def loose_check(board, mark, position):
     """Returns boolean value whether the player loses the game."""
-    if horizontal_check(board, mark, position):
-        return True
-    elif vertical_check(board, mark, position):
-        return True
-    elif down_right_diagonal_check(board, mark, position):
-        return True
-    elif up_left_diagonal_check(board, mark, position):
-        return True
-    else:
-        return False
+    return horizontal_check(board, mark, position) + \
+        vertical_check(board, mark, position) + \
+        down_right_diagonal_check(board, mark, position) + \
+        up_left_diagonal_check(board, mark, position)
+
 
 def full_board_check(board):
     """Returns boolean value whether the game board is full of game marks."""
     return len(set(board)) == 2
 
+
 def space_check(board, position):
     """Returns boolean value whether the cell is free or not."""
     return board[position] not in PLAYERS_MARKS
+
 
 def computer_choice(board, mark):
     """Returns position of computer's move"""
@@ -185,29 +188,36 @@ def computer_choice(board, mark):
         random.shuffle(variants)
         for position in variants:
             if space_check(board, position):
-                if loose_check(board, mark, position) != True:
-                    return position # ход компьютера
+                if not loose_check(board, mark, position):
+                    return position  # ход компьютера
                 else:
                     last_possible = position
                 continue
             else:
                 continue
-        return last_possible # случай проигрыша компьютера
+        return last_possible  # случай проигрыша компьютера
     else:
-        return None # случай ничейного результата
+        return None  # случай ничейного результата
+
 
 def place_marker(board, marker, position):
     """Puts a player mark to appropriate position."""
-    board[position] = marker
+    board[position] = to_paint_marks(marker)
+
+
+def mark_change(mark):
+    if mark == PLAYERS_MARKS[0]:
+        return PLAYERS_MARKS[1]
+    else:
+        return PLAYERS_MARKS[0]
 
 def switch_player(old_player, old_mark):
     """Switches players to play next turn."""
-    if old_mark == PLAYERS_MARKS[0]:
-        CURRENT_MARK = PLAYERS_MARKS[1]
-    else:
-        CURRENT_MARK = PLAYERS_MARKS[0]
+
+    CURRENT_MARK = mark_change(old_mark)
     CURRENT_PLAYER = not old_player
     return CURRENT_PLAYER, CURRENT_MARK
+
 
 def player_input():
     """Gets player's input string to choose the game mark to play."""
@@ -215,12 +225,16 @@ def player_input():
     while HUMAN_MARK not in PLAYERS_MARKS:
         HUMAN_MARK = input(f'Please, choose your marker: {PLAYERS_MARKS[0]} or {PLAYERS_MARKS[1]}: ').upper()
 
-    if HUMAN_MARK == PLAYERS_MARKS[0]:
-        PC_MARK = PLAYERS_MARKS[1]
-    else:
-        PC_MARK = PLAYERS_MARKS[0]
+    PC_MARK = mark_change(HUMAN_MARK)
 
     return HUMAN_MARK, PC_MARK
+
+def to_paint_marks(mark):
+    if mark == PLAYERS_MARKS[0]:
+        mark_painted = '\033[31m X  \033[00m'
+    else:
+        mark_painted = '\033[34m O  \033[00m'
+    return mark_painted
 
 def choose_first():
     """Randomly returns the player that goes first."""
@@ -229,6 +243,7 @@ def choose_first():
         return False, HUMAN_MARK
     else:
         return True, PC_MARK
+
 
 def player_choice(board, player_mark):
     """Gets player's next position and check if it's appropriate to play."""
@@ -245,17 +260,20 @@ def player_choice(board, player_mark):
     if space_check(board, position):
         return position, True
 
-    return -1, False # случай занятой клетки
+    return -1, False  # случай занятой клетки
+
 
 def check_game_finish(board, mark, position):
     """Return boolean value is the game finished or not."""
-    if loose_check(board, mark, position):
+    mark_paint = to_paint_marks(mark)
+    if loose_check(board, mark_paint, position):
         print(f'The player with the mark "{mark}" loses!')
         return True
     if full_board_check(PLAY_BOARD):
         print('The game ended in a draw.')
         return True
     return False
+
 
 def replay():
     """Asks the players to play again."""
@@ -265,9 +283,11 @@ def replay():
 
     return decision == 'y'
 
+
 def clear_screen():
     """Clears the game screen via adding new rows."""
     print('\n' * 100)
+
 
 print('Welcome to Tic Tac Toe!')
 
@@ -303,4 +323,3 @@ while True:
             CURRENT_PLAYER, CURRENT_PLAYER_MARK = choose_first()
     else:
         CURRENT_PLAYER, CURRENT_PLAYER_MARK = switch_player(CURRENT_PLAYER, CURRENT_PLAYER_MARK)
-    print()
