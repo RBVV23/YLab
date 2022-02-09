@@ -15,6 +15,9 @@ nim='\033[31mX'
 
 print(f'{marks[0]:^{CELL_WIDTH}}', end='|')
 
+for ind, i in enumerate(range(10), start=-2):
+    print(f'{ind}: {i}')
+
 import random
 from math import log10, ceil
 #
