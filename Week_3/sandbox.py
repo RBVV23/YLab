@@ -28,22 +28,22 @@ W = 250
 window.geometry(f'{H}x{W}')
 
 # добавление надписей
-# x = 0
-# y = 0
-# lbl = Label(window, text=f'({x}, {y})', font=("Arial Bold", 14))
-# lbl.grid(column=x, row=y)
-#
-# x = 125
-# y = 25
-# lbl2 = Label(window, text=f'({x}, {y})', padx=x, pady=y, font=("Arial Bold", 14))
-# lbl2.grid(column=x, row=y)
-#
-# # добавление кнопок
-# x = 1
-# y = 0
-# btn = Button(window, text="Кнопка", command=clicked)
-# btn.grid(column=x, row=y)
-#
+x = 0
+y = 0
+lbl = Label(window, text=f'({x}, {y})', font=("Arial Bold", 14))
+lbl.grid(column=x, row=y)
+
+x = 125
+y = 25
+lbl2 = Label(window, text=f'({x}, {y})', padx=x, pady=y, font=("Arial Bold", 14))
+lbl2.grid(column=x, row=y)
+
+# добавление кнопок
+x = 1
+y = 0
+btn = Button(tabs[0], text="Кнопка", command=clicked)
+btn.grid(column=x, row=y)
+
 # # создание поля ввода
 # input_txt = Entry(window, width=10)
 # x = 2
