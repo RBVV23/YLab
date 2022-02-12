@@ -1,9 +1,11 @@
 from tkinter import *
 from tkinter.ttk import Combobox, Notebook
 
-def clicked(i):
+def clicked(j):
     # lbl.configure(text="Кнопка нажата", fg="red")
-    res = f"Считано {input_txts[i].get()} и {combos[i].get()}"
+    # i = btns.index(btn)
+    i = 0
+    res = f"Считано {input_txts[i].get()}, {j} и {combos[i].get()}"
     lbls[i].configure(text=res, fg="green")
     input_txts[i].configure(width=5, state='disabled')
 
@@ -30,9 +32,6 @@ for i, tab_name in enumerate(tab_names):
     lbl2 = Label(tabs[i], text=f'Надпись_2 {i}', font=("Arial Bold", 14))
     lbl2.grid(column=1, row=0)
     lbls2.append(lbl2)
-    btn = Button(tabs[i], text="Кнопка", command=clicked(i))
-    btn.grid(column=2, row=0)
-    btns.append((btn))
     input_txt = Entry(tabs[i], width=10)
     input_txt.grid(column=2, row=2)
     input_txts.append(input_txt)
@@ -41,6 +40,9 @@ for i, tab_name in enumerate(tab_names):
     combo.current(0)
     combo.grid(column=2, row=3)
     combos.append(combo)
+    btn = Button(tabs[i], text="Кнопка", command=clicked(i))
+    btn.grid(column=2, row=0)
+    btns.append(btn)
 
 tab_control.pack(expand=1, fill='both')
 
