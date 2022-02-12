@@ -1,4 +1,4 @@
-
+from math import sin, pi
 
 class Shape():
     title = 'Shape'
@@ -7,51 +7,65 @@ class Shape():
         self.a = a
 
     def lebesgue_measure(self):
-        print('Метод "Shape"')
+        print('Метод "Shape.lebesgue_measure()"')
         # pass
 
     # для плоских фигур мера Лебега границы - это периметр, а для объёмных - площадь поверхности
     def border_lebesgue_measure(self):
-        print('Метод "Shape"')
+        print('Метод "Shape.border_lebesgue_measure()"')
 
 
 class PlanShape(Shape):
     title = 'PlanShape'
     def __init__(self):
+        # self.a = a
         self.area = self.lebesgue_measure()
         self.perimeter = self.border_lebesgue_measure()
 
     def lebesgue_measure(self): # площадь фигуры на плоскости
-        self.area = -1
+        # self.area = -1
         print('Метод "PlanShape"')
+        return -1
 
     def border_lebesgue_measure(self): #  периметр плоской на плоскости
-        self.perimeter = -1
+        # self.perimeter = -1
         print('Метод "PlanShape"')
+        return -1
 
-class Parallelogram(PlanShape):
-    title = 'Parallelogram'
-    def __init__(self, a, b, alpha):
-        super().__init__()
-        self.b = b
-        self.alpha = alpha
-        self.betta = 180 - self.alpha
     def info(self):
         print(f'TITLE: {self.title}')
         print(f'\tself.a = {self.a}')
         print(f'\tself.b = {self.b}')
         print(f'\tself.alpha = {self.alpha}')
         print(f'\tself.betta = {self.betta}')
+        print(f'\tself.area = {self.area}')
+        print(f'\tself.perimeter = {self.perimeter}')
+
+class Rhombus(PlanShape):
+    title = 'Rhombus'
+    def __init__(self, a, alpha):
+        self.a = a
+        self.b = a
+        self.alpha = alpha
+        self.betta = 180 - self.alpha
+        super().__init__()
+
+    def lebesgue_measure(self):
+        return self.a*self.b*sin(pi*self.alpha/180)
+
+    def border_lebesgue_measure(self):
+        return 2*(self.a + self.b)
 
 
-class Square(Parallelogram):
+class Square(PlanShape):
     title = 'Square'
     def __init__(self, a):
         self.a = a
-        self.b = a
+        self.b = self.a
         self.alpha = 90
         self.betta = 180 - self.alpha
-        print(f'self.a = {self.a}')
+        super().__init__()
+
 
     def lebesgue_measure(self):
         return self.a*self.a
@@ -59,13 +73,14 @@ class Square(Parallelogram):
     def border_lebesgue_measure(self):
         return 4*self.a
 
-class Rectangle(Parallelogram):
+class Rectangle(PlanShape):
     title = 'Rectangle'
     def __init__(self, a, b):
         self.a = a
         self.b = b
         self.alpha = 90
         self.betta = 180 - self.alpha
+        super().__init__()
 
     def lebesgue_measure(self):
         return self.a*self.b
@@ -73,6 +88,24 @@ class Rectangle(Parallelogram):
     def border_lebesgue_measure(self):
         return 2*(self.a + self.b)
 
+class Disk(PlanShape):
+    title = 'Disk'
+    def __init__(self, r):
+        self.r = r
+        super().__init__()
+
+
+    def lebesgue_measure(self):
+        return pi*self.r*self.r
+
+    def border_lebesgue_measure(self):
+        return 2*pi*self.r
+
+    def info(self):
+        print(f'TITLE: {self.title}')
+        print(f'\tself.r = {self.r}')
+        print(f'\tself.area = {self.area}')
+        print(f'\tself.perimeter = {self.perimeter}')
 
 class StereoShape(Shape):
     title = 'StereoShape'
@@ -86,21 +119,26 @@ class StereoShape(Shape):
 
 
 
+figure = PlanShape()
+print(f'figure = PlanShape()')
+# print(figure.lebesgue_measure())
+# print(figure.border_lebesgue_measure())
+print(f'figure.area() = {figure.area}')
+print(f'figure.perimeter() = {figure.perimeter}')
+
+
 figure = Square(10)
 print(f'figure = Square(10)')
-print(figure.lebesgue_measure())
-print(figure.border_lebesgue_measure())
 figure.info()
 
 figure = Rectangle(10, 15)
-print(f'figure = Rectangle(10)')
-print(figure.lebesgue_measure())
-print(figure.border_lebesgue_measure())
+print(f'figure = Rectangle(10, 15)')
 figure.info()
 
-figure = PlanShape()
-print(f'figure = PlanShape()')
-print(figure.lebesgue_measure())
-print(figure.border_lebesgue_measure())
-print(f'figure.area() = {figure.area}')
-print(f'figure.perimeter() = {figure.perimeter}')
+figure = Rhombus(5, 30)
+print(f'figure = Rectangle(5, 30)')
+figure.info()
+
+figure = Disk(10)
+print(f'figure = Disk(10)')
+figure.info()
