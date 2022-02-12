@@ -56,7 +56,6 @@ class Rhombus(PlanShape):
     def border_lebesgue_measure(self):
         return 2*(self.a + self.b)
 
-
 class Square(PlanShape):
     title = 'Square'
     def __init__(self, a):
@@ -107,38 +106,95 @@ class Disk(PlanShape):
         print(f'\tself.area = {self.area}')
         print(f'\tself.perimeter = {self.perimeter}')
 
+class Triangle(PlanShape):
+    title = 'Triangle'
+    def __init__(self, a, b, alpha):
+        self.a = a
+        self.b = b
+        self.c = self.a + self.b - 1
+        self.alpha = alpha
+        self.betta = 90
+        self.gamma = 90 - self.alpha
+        super().__init__()
+
+    def lebesgue_measure(self):
+        return 0.5*self.a*self.b*sin(pi*self.alpha/180)
+
+    def border_lebesgue_measure(self):
+        return self.a + self.b + self.c
+
+    def info(self):
+        super().info()
+        print(f'\tself.c = {self.c}')
+        print(f'\tself.gamma = {self.gamma}')
+
+class Trapezoid(PlanShape):
+    title = 'Trapezoid'
+    def __init__(self, a, b, c, alpha):
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = c
+        self.alpha = alpha
+        self.betta = 180 - self.alpha
+        super().__init__()
+
+    def lebesgue_measure(self):
+        h = self.c/sin(pi*self.alpha/180)
+        return 0.5*(self.a+self.b)*h
+
+    def border_lebesgue_measure(self):
+        return self.a + self.b + self.c + self.d
+
+    def info(self):
+        super().info()
+        print(f'\tself.c = {self.c}')
+        print(f'\tself.d = {self.d}')
+
+
 class StereoShape(Shape):
     title = 'StereoShape'
+    def __init__(self):
+        self.volume = self.lebesgue_measure()
+        self.perimeter = self.border_lebesgue_measure()
+
     def lebesgue_measure(self): # объем фигуры в пространстве
-        self.volume = -1
-        pass
+        print('Метод "StereoShape"')
+        return -1
 
     def border_lebesgue_measure(self): #  площадь поверхности фигуры в пространстве
-        self.border_area = -1
-        pass
+        print('Метод "StereoShape"')
+        return -1
+
 
 
 
 figure = PlanShape()
-print(f'figure = PlanShape()')
-# print(figure.lebesgue_measure())
-# print(figure.border_lebesgue_measure())
+print(f'\nfigure = PlanShape()')
 print(f'figure.area() = {figure.area}')
 print(f'figure.perimeter() = {figure.perimeter}')
 
 
 figure = Square(10)
-print(f'figure = Square(10)')
+print(f'\nfigure = Square(10)')
 figure.info()
 
 figure = Rectangle(10, 15)
-print(f'figure = Rectangle(10, 15)')
+print(f'\nfigure = Rectangle(10, 15)')
 figure.info()
 
 figure = Rhombus(5, 30)
-print(f'figure = Rectangle(5, 30)')
+print(f'\nfigure = Rectangle(5, 30)')
 figure.info()
 
 figure = Disk(10)
-print(f'figure = Disk(10)')
+print(f'\nfigure = Disk(10)')
+figure.info()
+
+figure = Triangle(3, 4, 30)
+print(f'\nfigure = Triangle(3, 4, 30)')
+figure.info()
+
+figure = Trapezoid(3, 4, 10, 30)
+print(f'\nfigure = Trapezoid(3, 4, 10, 30)')
 figure.info()
