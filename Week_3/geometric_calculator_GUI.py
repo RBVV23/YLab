@@ -171,6 +171,112 @@ class StereoShape(Shape):
         print(f'\tself.surface_area = {self.surface_area}')
 
 
+class Ball(StereoShape):
+    title = 'Ball'
+    def __init__(self, r):
+        self.r = r
+        super().__init__()
+
+
+    def lebesgue_measure(self):
+        return 4*pi*self.r*self.r*self.r/3
+
+    def border_lebesgue_measure(self):
+        return 4*pi*self.r*self.r
+
+    def info(self):
+        print(f'TITLE: {self.title}')
+        print(f'\tself.r = {self.r}')
+        print(f'\tself.volume = {self.volume}')
+        print(f'\tself.surface_area = {self.surface_area}')
+
+class Cube(StereoShape):
+    title = 'Cube'
+    def __init__(self, a):
+        self.a = a
+        self.b = self.a
+        self.h = self.a
+        super().__init__()
+
+
+    def lebesgue_measure(self):
+        return self.a*self.a*self.a
+
+    def border_lebesgue_measure(self):
+        return 6*self.a*self.a
+
+class Cuboid(StereoShape):
+    title = 'Cuboid'
+    def __init__(self, a, b, h):
+        self.a = a
+        self.b = b
+        self.h = h
+        super().__init__()
+
+    def lebesgue_measure(self):
+        return self.a*self.b*self.h
+
+    def border_lebesgue_measure(self):
+        return 2*(self.a*self.b + self.b*self.h + self.a*self.h)
+
+class RightTetrahedron(StereoShape):
+    title = 'Right tetrahedron'
+    def __init__(self, a):
+        self.a = a
+        self.b = a
+        self.h = sqrt(2*self.a*self.a/3)
+        self.alpha = 60
+        super().__init__()
+
+    def lebesgue_measure(self):
+        S_base = 0.5*self.a*self.b*sin(pi*self.alpha/180)
+        return S_base*self.h/3
+
+    def border_lebesgue_measure(self):
+        S_base = 0.5 * self.a * self.b * sin(pi * self.alpha / 180)
+        return 4*S_base
+
+class RightCylinder(StereoShape):
+    title = 'Right cylinder'
+    def __init__(self, r, h):
+        self.r = r
+        self.h = h
+        super().__init__()
+
+
+    def lebesgue_measure(self):
+        return pi*self.r*self.r*self.h
+
+    def border_lebesgue_measure(self):
+        return 2*pi*self.r*(self.r + self.h)
+
+    def info(self):
+        print(f'TITLE: {self.title}')
+        print(f'\tself.r = {self.r}')
+        print(f'\tself.h = {self.h}')
+        print(f'\tself.volume = {self.volume}')
+        print(f'\tself.surface_area = {self.surface_area}')
+
+class RightCone(StereoShape):
+    title = 'Right cone'
+    def __init__(self, r, h):
+        self.r = r
+        self.h = h
+        super().__init__()
+
+
+    def lebesgue_measure(self):
+        return pi*self.r*self.r*self.h
+
+    def border_lebesgue_measure(self):
+        return 2*pi*self.r*(self.r + self.h)
+
+    def info(self):
+        print(f'TITLE: {self.title}')
+        print(f'\tself.r = {self.r}')
+        print(f'\tself.h = {self.h}')
+        print(f'\tself.volume = {self.volume}')
+        print(f'\tself.surface_area = {self.surface_area}')
 
 figure = PlanShape()
 print(f'\nfigure = PlanShape()')
@@ -201,3 +307,28 @@ print(f'figure.perimeter() = {figure.perimeter}')
 # figure = Trapezoid(3, 4, 10, 30)
 # print(f'\nfigure = Trapezoid(3, 4, 10, 30)')
 # figure.info()
+
+figure = StereoShape()
+print(f'\nfigure = StreoShape()')
+print(f'figure.volume() = {figure.volume}')
+print(f'figure.surface_area() = {figure.surface_area}')
+
+figure = Ball(10)
+print(f'\nfigure = Ball(10)')
+figure.info()
+
+figure = Cube(2)
+print(f'\nfigure = Cube(2)')
+figure.info()
+
+figure = Cuboid(3, 4, 5)
+print(f'\nfigure = Cuboid(3, 4, 5)')
+figure.info()
+
+figure = RightTetrahedron(3)
+print(f'\nfigure = RightTetrahedron(3)')
+figure.info()
+
+figure = Cylinder(3, 10)
+print(f'\nfigure = Cylinder(3, 10)')
+figure.info()
