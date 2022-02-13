@@ -266,10 +266,11 @@ class RightCone(StereoShape):
 
 
     def lebesgue_measure(self):
-        return pi*self.r*self.r*self.h
+        return pi*self.r*self.r*self.h/3
 
     def border_lebesgue_measure(self):
-        return 2*pi*self.r*(self.r + self.h)
+        slant_height = sqrt(self.r**2 + self.h**2)
+        return pi*self.r*(self.r + slant_height)
 
     def info(self):
         print(f'TITLE: {self.title}')
@@ -329,6 +330,10 @@ figure = RightTetrahedron(3)
 print(f'\nfigure = RightTetrahedron(3)')
 figure.info()
 
-figure = Cylinder(3, 10)
+figure = RightCylinder(3, 10)
 print(f'\nfigure = Cylinder(3, 10)')
+figure.info()
+
+figure = RightCone(3, 4)
+print(f'\nfigure = RightCone(3, 10)')
 figure.info()
