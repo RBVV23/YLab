@@ -1,60 +1,78 @@
+from tkinter import *
 from all_classes import *
+from tkinter.ttk import Combobox, Notebook
 
-figure = PlanShape()
-print(f'\nfigure = PlanShape()')
-print(f'figure.area() = {figure.area}')
-print(f'figure.perimeter() = {figure.perimeter}')
+class_dict = {
+    'Круг': Disk,
+    'Квадрат': Square,
+    'Прямоугольник': Rectangle,
+    'Треугольник': Triangle,
+    'Трапеция': Trapezoid,
+    'Ромб': Rhombus
+}
 
-#  плоские тесты
-# figure = Square(10)
-# print(f'\nfigure = Square(10)')
-# figure.info()
-#
-# figure = Rectangle(10, 15)
-# print(f'\nfigure = Rectangle(10, 15)')
-# figure.info()
-#
-# figure = Rhombus(5, 30)
-# print(f'\nfigure = Rectangle(5, 30)')
-# figure.info()
-#
-# figure = Disk(10)
-# print(f'\nfigure = Disk(10)')
-# figure.info()
-#
-# figure = Triangle(3, 4, 30)
-# print(f'\nfigure = Triangle(3, 4, 30)')
-# figure.info()
-#
-# figure = Trapezoid(3, 4, 10, 30)
-# print(f'\nfigure = Trapezoid(3, 4, 10, 30)')
-# figure.info()
+window = Tk()
 
-figure = StereoShape()
-print(f'\nfigure = StreoShape()')
-print(f'figure.volume() = {figure.volume}')
-print(f'figure.surface_area() = {figure.surface_area}')
+max_entry_fields = 4  # максимальное количество входных параметров
+entry_instruction_lbls = []  # список меток (Label), поясняющих пользовательский ввод
+input_ents = []  # список полей ввода пользователя (Entry)
 
-figure = Ball(10)
-print(f'\nfigure = Ball(10)')
-figure.info()
+for n in range(1, max_entry_fields + 1):
+    lbl = Label(window, text=f'Поле ввода параметра #{n}: ')
+    lbl.grid(column=0, row=n)
+    entry_instruction_lbls.append(lbl)
 
-figure = Cube(2)
-print(f'\nfigure = Cube(2)')
-figure.info()
+    ent = Entry(window, width=10, state='disabled')
+    ent.grid(column=1, row=n)
+    input_ents.append(ent)
 
-figure = Cuboid(3, 4, 5)
-print(f'\nfigure = Cuboid(3, 4, 5)')
-figure.info()
 
-figure = RightTetrahedron(3)
-print(f'\nfigure = RightTetrahedron(3)')
-figure.info()
+def choose_mode():
+    FigureType = class_dict[combo.get()]
+    text = f'Выбранная фигура: {FigureType.title}'
+    lbl.configure(text=text)
 
-figure = RightCylinder(3, 10)
-print(f'\nfigure = Cylinder(3, 10)')
-figure.info()
+    for n, instruction in enumerate(FigureType.input_instructions):
+        entry_instruction_lbls[n].configure(text=instruction)
+        input_ents[n].configure(state='normal')
+    lbl.configure(text=text, fg='green')
+    btn_2 = Button(window, text="Подтвердить", command=lambda: choose_parameters(FigureType))
+    btn_2.grid(column=2, row=3)
 
-figure = RightCone(3, 4)
-print(f'\nfigure = RightCone(3, 10)')
-figure.info()
+
+def choose_parameters(FigureType):
+    lbl.configure(fg='black')
+    parameters = []
+    for n, instruction in enumerate(FigureType.input_instructions):
+        parameter = float(input_ents[n].get())
+        parameters.append(parameter)
+
+    Figure = FigureType(parameters)
+    final_lbl_1 = Label(window, text=Figure.border_lebesgue_measure())
+    final_lbl_1.grid(column=3, row=1)
+    final_lbl_2 = Label(window, text=Figure.lebesgue_measure())
+    final_lbl_2.grid(column=3, row=2)
+    final_lbl_3 = Label(window, text=Figure.title)
+    final_lbl_3.grid(column=3, row=3)
+
+
+window.title('Добро пожаловать в приложение "Геометрический калькулятор"!')
+
+class_names = ('Круг', 'Квадрат', 'Прямоугольник', 'Треугольник', 'Трапеция', 'Ромб')
+
+combo = Combobox(window)
+combo['values'] = tuple(class_dict.keys())
+combo.current(0)
+
+combo.grid(column=0, row=0)
+
+lbl = Label(window, text='Выбранная фигура: ')
+lbl.grid(column=2, row=-0)
+
+btn = Button(window, text="Подтвердить", command=choose_mode)
+btn.grid(column=1, row=0)
+
+H = 1200
+W = 675
+window.geometry(f'{H}x{W}')
+window.mainloop()
