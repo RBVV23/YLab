@@ -18,6 +18,9 @@ class Shape():
 
 class PlanShape(Shape):
     title = 'PlanShape'
+    lebesgue_measure_name = 'Площадь'
+    border_lebesgue_measure_name = 'Периметр'
+
     def __init__(self):
         # self.a = a
         self.area = self.lebesgue_measure()
@@ -44,10 +47,12 @@ class PlanShape(Shape):
 
 class Rhombus(PlanShape):
     title = 'Rhombus'
-    def __init__(self, a, alpha):
-        self.a = a
-        self.b = a
-        self.alpha = alpha
+    input_instructions = ['Введите сторону a: ',
+                          'Введите угол \u03B1: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
+        self.b = self.a
+        self.alpha = parameters[1]
         self.betta = 180 - self.alpha
         super().__init__()
 
@@ -60,8 +65,9 @@ class Rhombus(PlanShape):
 
 class Square(PlanShape):
     title = 'Square'
-    def __init__(self, a):
-        self.a = a
+    input_instructions = ['Введите сторону a: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
         self.b = self.a
         self.alpha = 90
         self.betta = 180 - self.alpha
@@ -77,9 +83,11 @@ class Square(PlanShape):
 
 class Rectangle(PlanShape):
     title = 'Rectangle'
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b
+    input_instructions = ['Введите сторону a: ',
+                          'Введите сторону b: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
+        self.b = parameters[1]
         self.alpha = 90
         self.betta = 180 - self.alpha
         super().__init__()
@@ -93,8 +101,9 @@ class Rectangle(PlanShape):
 
 class Disk(PlanShape):
     title = 'Disk'
-    def __init__(self, r):
-        self.r = r
+    input_instructions = ['Введите радиус r: ']
+    def __init__(self, parameters):
+        self.r = parameters[0]
         super().__init__()
 
 
@@ -113,10 +122,13 @@ class Disk(PlanShape):
 
 class Triangle(PlanShape):
     title = 'Triangle'
-    def __init__(self, a, b, alpha):
-        self.a = a
-        self.b = b
-        self.alpha = alpha
+    input_instructions = ['Введите сторону a: ',
+                          'Введите сторону b: ',
+                          'Введите угол \u03B1: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
+        self.b = parameters[1]
+        self.alpha = parameters[2]
         self.c = sqrt(self.a**2 + self.b**2 - 2*self.a*self.b*cos(pi*self.alpha/180))
         super().__init__()
 
@@ -134,11 +146,15 @@ class Triangle(PlanShape):
 
 class Trapezoid(PlanShape):
     title = 'Trapezoid'
-    def __init__(self, a, b, c, alpha):
-        self.a = a
-        self.b = b
-        self.c = c
-        self.alpha = alpha
+    input_instructions = ['Введите основание a: ',
+                          'Введите основание b: ',
+                          'Введите боковую сторону c: ',
+                          'Введите угол \u03B1: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
+        self.b = parameters[1]
+        self.c = parameters[2]
+        self.alpha = parameters[3]
         self.d = sqrt((self.c/sin(pi*self.alpha/180))**2 + (self.b - self.a - self.c*cos(pi*self.alpha/180))**2)
         self.betta = 180 - self.alpha
         super().__init__()
@@ -157,6 +173,9 @@ class Trapezoid(PlanShape):
 
 class StereoShape(Shape):
     title = 'StereoShape'
+    lebesgue_measure_name = 'Объем'
+    border_lebesgue_measure_name = 'Площадь боковой поверхности'
+
     def __init__(self):
         self.volume = self.lebesgue_measure()
         self.surface_area = self.border_lebesgue_measure()
