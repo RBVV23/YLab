@@ -1,4 +1,4 @@
-from math import sin, pi
+from math import sin, pi, sqrt, cos
 
 class Shape():
     title = 'Shape'
@@ -37,7 +37,6 @@ class PlanShape(Shape):
         print(f'\tself.a = {self.a}')
         print(f'\tself.b = {self.b}')
         print(f'\tself.alpha = {self.alpha}')
-        print(f'\tself.betta = {self.betta}')
         print(f'\tself.area = {self.area}')
         print(f'\tself.perimeter = {self.perimeter}')
 
@@ -111,10 +110,8 @@ class Triangle(PlanShape):
     def __init__(self, a, b, alpha):
         self.a = a
         self.b = b
-        self.c = self.a + self.b - 1
         self.alpha = alpha
-        self.betta = 90
-        self.gamma = 90 - self.alpha
+        self.c = sqrt(self.a**2 + self.b**2 - 2*self.a*self.b*cos(pi*self.alpha/180))
         super().__init__()
 
     def lebesgue_measure(self):
@@ -125,8 +122,8 @@ class Triangle(PlanShape):
 
     def info(self):
         super().info()
-        print(f'\tself.c = {self.c}')
-        print(f'\tself.gamma = {self.gamma}')
+        # print(f'\tself.c = {self.c}')
+        # print(f'\tself.gamma = {self.gamma}')
 
 class Trapezoid(PlanShape):
     title = 'Trapezoid'
@@ -134,8 +131,8 @@ class Trapezoid(PlanShape):
         self.a = a
         self.b = b
         self.c = c
-        self.d = c
         self.alpha = alpha
+        self.d = sqrt((self.c/sin(pi*self.alpha/180))**2 + (self.b - self.a - self.c*cos(pi*self.alpha/180))**2)
         self.betta = 180 - self.alpha
         super().__init__()
 
@@ -149,14 +146,13 @@ class Trapezoid(PlanShape):
     def info(self):
         super().info()
         print(f'\tself.c = {self.c}')
-        print(f'\tself.d = {self.d}')
 
 
 class StereoShape(Shape):
     title = 'StereoShape'
     def __init__(self):
         self.volume = self.lebesgue_measure()
-        self.perimeter = self.border_lebesgue_measure()
+        self.surface_area = self.border_lebesgue_measure()
 
     def lebesgue_measure(self): # объем фигуры в пространстве
         print('Метод "StereoShape"')
@@ -166,6 +162,13 @@ class StereoShape(Shape):
         print('Метод "StereoShape"')
         return -1
 
+    def info(self):
+        print(f'TITLE: {self.title}')
+        print(f'\tself.a = {self.a}')
+        print(f'\tself.b = {self.b}')
+        print(f'\tself.h = {self.h}')
+        print(f'\tself.volume = {self.volume}')
+        print(f'\tself.surface_area = {self.surface_area}')
 
 
 
@@ -174,27 +177,27 @@ print(f'\nfigure = PlanShape()')
 print(f'figure.area() = {figure.area}')
 print(f'figure.perimeter() = {figure.perimeter}')
 
-
-figure = Square(10)
-print(f'\nfigure = Square(10)')
-figure.info()
-
-figure = Rectangle(10, 15)
-print(f'\nfigure = Rectangle(10, 15)')
-figure.info()
-
-figure = Rhombus(5, 30)
-print(f'\nfigure = Rectangle(5, 30)')
-figure.info()
-
-figure = Disk(10)
-print(f'\nfigure = Disk(10)')
-figure.info()
-
-figure = Triangle(3, 4, 30)
-print(f'\nfigure = Triangle(3, 4, 30)')
-figure.info()
-
-figure = Trapezoid(3, 4, 10, 30)
-print(f'\nfigure = Trapezoid(3, 4, 10, 30)')
-figure.info()
+#  плоские тесты
+# figure = Square(10)
+# print(f'\nfigure = Square(10)')
+# figure.info()
+#
+# figure = Rectangle(10, 15)
+# print(f'\nfigure = Rectangle(10, 15)')
+# figure.info()
+#
+# figure = Rhombus(5, 30)
+# print(f'\nfigure = Rectangle(5, 30)')
+# figure.info()
+#
+# figure = Disk(10)
+# print(f'\nfigure = Disk(10)')
+# figure.info()
+#
+# figure = Triangle(3, 4, 30)
+# print(f'\nfigure = Triangle(3, 4, 30)')
+# figure.info()
+#
+# figure = Trapezoid(3, 4, 10, 30)
+# print(f'\nfigure = Trapezoid(3, 4, 10, 30)')
+# figure.info()
