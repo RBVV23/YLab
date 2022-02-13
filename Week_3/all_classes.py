@@ -1,5 +1,6 @@
 from math import sin, pi, sqrt, cos
 
+
 class Shape():
     title = 'Shape'
     # для плоских фигур мера Лебега - это площадь, а для объемных - объем
@@ -40,6 +41,7 @@ class PlanShape(Shape):
         print(f'\tself.area = {self.area}')
         print(f'\tself.perimeter = {self.perimeter}')
 
+
 class Rhombus(PlanShape):
     title = 'Rhombus'
     def __init__(self, a, alpha):
@@ -54,6 +56,7 @@ class Rhombus(PlanShape):
 
     def border_lebesgue_measure(self):
         return 2*(self.a + self.b)
+
 
 class Square(PlanShape):
     title = 'Square'
@@ -71,6 +74,7 @@ class Square(PlanShape):
     def border_lebesgue_measure(self):
         return 4*self.a
 
+
 class Rectangle(PlanShape):
     title = 'Rectangle'
     def __init__(self, a, b):
@@ -85,6 +89,7 @@ class Rectangle(PlanShape):
 
     def border_lebesgue_measure(self):
         return 2*(self.a + self.b)
+
 
 class Disk(PlanShape):
     title = 'Disk'
@@ -105,6 +110,7 @@ class Disk(PlanShape):
         print(f'\tself.area = {self.area}')
         print(f'\tself.perimeter = {self.perimeter}')
 
+
 class Triangle(PlanShape):
     title = 'Triangle'
     def __init__(self, a, b, alpha):
@@ -124,6 +130,7 @@ class Triangle(PlanShape):
         super().info()
         # print(f'\tself.c = {self.c}')
         # print(f'\tself.gamma = {self.gamma}')
+
 
 class Trapezoid(PlanShape):
     title = 'Trapezoid'
@@ -190,6 +197,7 @@ class Ball(StereoShape):
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
 
+
 class Cube(StereoShape):
     title = 'Cube'
     def __init__(self, a):
@@ -205,6 +213,7 @@ class Cube(StereoShape):
     def border_lebesgue_measure(self):
         return 6*self.a*self.a
 
+
 class Cuboid(StereoShape):
     title = 'Cuboid'
     def __init__(self, a, b, h):
@@ -218,6 +227,7 @@ class Cuboid(StereoShape):
 
     def border_lebesgue_measure(self):
         return 2*(self.a*self.b + self.b*self.h + self.a*self.h)
+
 
 class RightTetrahedron(StereoShape):
     title = 'Right tetrahedron'
@@ -235,6 +245,7 @@ class RightTetrahedron(StereoShape):
     def border_lebesgue_measure(self):
         S_base = 0.5 * self.a * self.b * sin(pi * self.alpha / 180)
         return 4*S_base
+
 
 class RightCylinder(StereoShape):
     title = 'Right cylinder'
@@ -256,6 +267,7 @@ class RightCylinder(StereoShape):
         print(f'\tself.h = {self.h}')
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
+
 
 class RightCone(StereoShape):
     title = 'Right cone'
