@@ -84,4 +84,10 @@ window.geometry(f'{H}x{W}')
 # combo.grid(column=x, row=y)
 #
 # # добавление списка с флажками
-window.mainloop()
+# window.mainloop()
+
+from geometric_calculator_GUI import *
+
+figure = RightCone(3, 4)
+print(f'\nfigure = RightCone(3, 10)')
+figure.info()
