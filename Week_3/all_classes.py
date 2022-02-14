@@ -94,7 +94,6 @@ class Square(PlanShape):
         D = (C[0], C[1] - self.a)
         return (A,B,C,D)
 
-
 class Rectangle(PlanShape):
     title = 'Rectangle'
     input_instructions = ['Введите сторону a: ',
@@ -174,14 +173,13 @@ class Trapezoid(PlanShape):
     input_instructions = ['Введите основание a: ',
                           'Введите основание b: ',
                           'Введите боковую сторону c: ',
-                          'Введите угол \u03B1: ']
+                          'Введите острый угол \u03B1: ']
     def __init__(self, parameters):
-        self.a = parameters[0]
-        self.b = parameters[1]
+        self.a = max(parameters[0],parameters[1])
+        self.b = min(parameters[0],parameters[1])
         self.c = parameters[2]
         self.alpha = parameters[3]
-        self.d = sqrt((self.c*sin(pi*self.alpha/180))**2 + \
-                      (max(self.b, self.a) - min(self.b, self.a) - self.c*cos(pi*self.alpha/180))**2)
+        self.d = sqrt((self.c*sin(pi*self.alpha/180))**2 + (self.a - self.b - self.c*cos(pi*self.alpha/180))**2)
         self.betta = 180 - self.alpha
         super().__init__()
 
@@ -196,6 +194,12 @@ class Trapezoid(PlanShape):
         super().info()
         print(f'\tself.c = {self.c}')
 
+    def building(self):
+        A = (0,0)
+        B = (A[0] + self.a, 0)
+        D = (A[0] + self.c*cos(pi*self.alpha/180), A[1] + self.c*sin(pi*self.alpha/180))
+        C = (D[0] + self.b, D[1])
+        return (A,B,C,D)
 
 class StereoShape(Shape):
     title = 'StereoShape'
