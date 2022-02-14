@@ -23,11 +23,11 @@ max_entry_fields = 4
 entry_instruction_lbls = []
 input_ents = []
 for n in range(1, max_entry_fields+1):
-    lbl = Label(window, text=f'Поле ввода параметра #{n}: ')
+    lbl = Label(window, text=f'Поле ввода параметра #{n}: ', height=4, width=25, font='Arial 18')
     lbl.grid(column=0, row=n)
     entry_instruction_lbls.append(lbl)
 
-    ent = Entry(window, width=10, state='disabled')
+    ent = Entry(window, width=5, state='disabled', font='Arial 18')
     ent.grid(column=1, row=n)
     input_ents.append(ent)
 
@@ -42,8 +42,9 @@ def choose_mode():
         entry_instruction_lbls[n].configure(text=instruction)
         input_ents[n].configure(state='normal')
     lbl.configure(text=text, fg='green')
-    btn_2 = Button(window, text="Подтвердить", command=lambda: choose_parameters(FigureType))
-    btn_2.grid(column=2, row=3)
+    btn_2 = Button(window, text="Подтвердить\nпараметры", font='Arial 18',
+                   command=lambda: choose_parameters(FigureType))
+    btn_2.grid(column=1, row=5)
 
 
 
@@ -59,12 +60,12 @@ def choose_parameters(FigureType):
 
     Figure = FigureType(parameters)
     final_lbl_1 = Label(window, text=Figure.border_lebesgue_measure())
-    final_lbl_1.grid(column=3, row=3)
+    final_lbl_1.grid(column=1, row=6)
     final_lbl_2 = Label(window, text=Figure.lebesgue_measure())
     # final_lbl_2 = Label(window, text=figure.area)
-    final_lbl_2.grid(column=3, row=4)
+    final_lbl_2.grid(column=1, row=7)
     final_lbl_3 = Label(window, text=Figure.title)
-    final_lbl_3.grid(column=3, row=5)
+    final_lbl_3.grid(column=1, row=8)
 
     fig = plt.figure(figsize=(3,3))
     axes = fig.add_subplot(111)
@@ -74,9 +75,9 @@ def choose_parameters(FigureType):
               [1, 1],
               [1, -1]]
 
-    plt.xlim(-10, 10)
-    plt.ylim(-10, 10)
-    plt.grid()
+    plt.xlim(-2, 2)
+    plt.ylim(-2, 2)
+    # plt.grid()
     # axes = plt.gca()
     axes.set_aspect("equal")
 
@@ -85,9 +86,12 @@ def choose_parameters(FigureType):
     axes.add_patch(poly)
     # plt.show()
 
+    axes.get_xaxis().set_visible(False)
+    axes.get_yaxis().set_visible(False)
+
     canvas1 = FigureCanvasTkAgg(fig, master=window)
-    canvas1.draw()
-    canvas1.get_tk_widget().grid(column=4, row=0)
+    # canvas1.draw()
+    canvas1.get_tk_widget().grid(column=3, row=1, rowspan=19)
     # canvas1.show()
 
     # canvas1.get_tk_widget().pack(side=TOP, fill=NONE, expand=0)
@@ -104,10 +108,10 @@ combo.current(0)  # установите вариант по умолчанию
 
 combo.grid(column=0, row=0)
 
-lbl = Label(window, text='Выбранная фигура: ')
-lbl.grid(column=2, row=-0)
+lbl = Label(window, text='Выбранная фигура: ', height=4, width=25, font='Arial 18')
+lbl.grid(column=0, row=5)
 
-btn = Button(window, text="Подтвердить", command=choose_mode)
+btn = Button(window, text="Выбрать\nфигуру", command=choose_mode, font='Arial 18')
 btn.grid(column=1, row=0)
 
 # cnv = Canvas(window, width=400, height=400, bg='white')
