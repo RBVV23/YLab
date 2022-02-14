@@ -4,6 +4,7 @@ from tkinter.ttk import Combobox, Notebook
 import matplotlib.pyplot as plt
 # from matplotlib.patches import *
 import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 
@@ -64,8 +65,34 @@ def choose_parameters(FigureType):
     final_lbl_2.grid(column=3, row=4)
     final_lbl_3 = Label(window, text=Figure.title)
     final_lbl_3.grid(column=3, row=5)
-    points = ((40, 110), (160, 110), (190, 180), (10, 180))
-    cnv.create_polygon(points)
+
+    fig = plt.figure(figsize=(3,3))
+    axes = fig.add_subplot(111)
+
+    points = [[-1, -1],
+              [-1, 1],
+              [1, 1],
+              [1, -1]]
+
+    plt.xlim(-10, 10)
+    plt.ylim(-10, 10)
+    plt.grid()
+    # axes = plt.gca()
+    axes.set_aspect("equal")
+
+    print(type(axes))
+    poly = plt.Polygon(xy=points, fill=False, closed=True)
+    axes.add_patch(poly)
+    # plt.show()
+
+    canvas1 = FigureCanvasTkAgg(fig, master=window)
+    canvas1.draw()
+    canvas1.get_tk_widget().grid(column=4, row=0)
+    # canvas1.show()
+
+    # canvas1.get_tk_widget().pack(side=TOP, fill=NONE, expand=0)
+
+
 
 window.title('Добро пожаловать в приложение "Геометрический калькулятор"!')
 
@@ -83,8 +110,8 @@ lbl.grid(column=2, row=-0)
 btn = Button(window, text="Подтвердить", command=choose_mode)
 btn.grid(column=1, row=0)
 
-cnv = Canvas(window, width=400, height=400, bg='white')
-cnv.grid(column=3, row=1)
+# cnv = Canvas(window, width=400, height=400, bg='white')
+# cnv.grid(column=3, row=1)
 
 
 
@@ -105,63 +132,51 @@ window.geometry(f'{H}x{W}')
 
 
 
+#
+# fig = plt.figure()
+# axes = fig.add_subplot(111)
+#
+# points = [[-1, -1],
+#           [-1, 1],
+#           [1, 1],
+#           [1, -1]]
+#
+# plt.xlim(-10, 10)
+# plt.ylim(-10, 10)
+# plt.grid()
+# # axes = plt.gca()
+# axes.set_aspect("equal")
+#
+# print(type(axes))
+# poly = plt.Polygon(xy=points, fill=False, closed=True)
+# axes.add_patch(poly)
+# plt.show()
 
 
 
 
-
-# window.mainloop()
+window.mainloop()
 
 X = [1, 5, 1, 5]
 Y = [1, 1, 5, 5]
 
 
 #
-# fig = plt.figure(figsize=(7, 4))
-# ax = fig.add_subplot()
-#
-# points = np.array([[1, 3],
-#           [3, 1],
-#           [1, 3],
-#           [3, 3]])
-# print(points.shape)
-# points = [[0.1, 0.3],
-#           [0.3, 0.1],
-#           [0.1, 0.3],
-#           [0.3, 0.3]]
-#
-# rect = Rectangle((-1, -1), 2.5, 3.5)
-#
-# # fig = plt.figure()
-#
-# poly = Polygon(xy=points, facecolor='g')
-#
-# ax.set(xlim=(-3, 3), ylim=(-3, 3))
-# ax.add_patch(poly)
-#
-#
-# print(type(fig))
-#
-# # plt.show()
+fig = plt.figure(figsize=(7, 4))
+ax = fig.add_subplot()
+
+points = np.array([[1, 3],
+          [3, 1],
+          [1, 3],
+          [3, 3]])
+print(points.shape)
+points = [[0.1, 0.3],
+          [0.3, 0.1],
+          [0.1, 0.3],
+          [0.3, 0.3]]
 
 
 
 
 
 
-
-points = [[-1, -1],
-          [-1, 1],
-          [1, 1],
-          [1, -1]]
-
-plt.xlim(-10, 10)
-plt.ylim(-10, 10)
-plt.grid()
-axes = plt.gca()
-axes.set_aspect("equal")
-
-print(type(axes))
-poly = plt.Polygon(xy=points, fill=False, closed=True)
-axes.add_patch(poly)
-plt.show()
