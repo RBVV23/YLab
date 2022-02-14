@@ -63,6 +63,13 @@ class Rhombus(PlanShape):
         return 2*(self.a + self.b)
 
 
+    def building(self):
+        A = (0,0)
+        B = (A[0] + self.a, 0)
+        D = (A[0] + self.b*cos(pi*self.alpha/180), A[1] + self.b*sin(pi*self.alpha/180))
+        C = (D[0] + self.a, D[1])
+        return (A,B,C,D)
+
 class Square(PlanShape):
     title = 'Square'
     input_instructions = ['Введите сторону a: ']
@@ -79,6 +86,13 @@ class Square(PlanShape):
 
     def border_lebesgue_measure(self):
         return 4*self.a
+
+    def building(self):
+        A = (0,0)
+        B = (0, A[1] + self.a)
+        C = (B[0] + self.a, B[1])
+        D = (C[0], C[1] - self.a)
+        return (A,B,C,D)
 
 
 class Rectangle(PlanShape):
@@ -98,6 +112,12 @@ class Rectangle(PlanShape):
     def border_lebesgue_measure(self):
         return 2*(self.a + self.b)
 
+    def building(self):
+        A = (0,0)
+        B = (0, A[1] + self.b)
+        C = (B[0] + self.a, B[1])
+        D = (C[0], C[1] - self.b)
+        return (A,B,C,D)
 
 class Disk(PlanShape):
     title = 'Disk'
@@ -143,6 +163,11 @@ class Triangle(PlanShape):
         # print(f'\tself.c = {self.c}')
         # print(f'\tself.gamma = {self.gamma}')
 
+    def building(self):
+        C = (0,0)
+        B = (C[0] + self.a, C[1])
+        A = (C[0] + self.b*cos(pi*self.alpha/180), C[1] + self.b*sin(pi*self.alpha/180))
+        return (A,B,C)
 
 class Trapezoid(PlanShape):
     title = 'Trapezoid'
