@@ -1,10 +1,12 @@
 from tkinter import *
 from all_classes import *
-from tkinter.ttk import Combobox, Notebook
+from tkinter.ttk import Combobox
 import matplotlib.pyplot as plt
-# from matplotlib.patches import *
-import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from matplotlib import pyplot as plt
+import numpy as np
+from scipy.spatial import ConvexHull
 
 
 
@@ -13,7 +15,13 @@ class_dict = {'Круг': Disk,
               'Прямоугольник': Rectangle,
               'Треугольник': Triangle,
               'Трапеция': Trapezoid,
-              'Ромб': Rhombus
+              'Ромб': Rhombus,
+              'Куб': Cube,
+              'Кубоид': Cuboid,
+              'Правильный тетраэдр': RightTetrahedron,
+              'Правильный конус': RightCone,
+              'Правильный цилиндр': RightCylinder,
+              'Шар': Ball
               }
 
 
@@ -72,27 +80,29 @@ def choose_parameters(FigureType):
     result_cls_lbl.grid(column=0, row=8)
 
     fig = plt.figure(figsize=(3,3))
-    axes = fig.add_subplot(111)
+    if Figure.is_plan:
+        axes = fig.add_subplot(111)
+        plt.xlim(-5, 10)
+        plt.ylim(-5, 10)
+        plt.grid()
+        axes = plt.gca()
+        axes.set_aspect("equal")
 
-    # points = [[-1, -1],
-    #           [-1, 1],
-    #           [1, 1],
-    #           [1, -1]]
-    # points = ((0, 0), (0, 5), (5, 5), (5, 0))
+        if Figure.is_circle:
+            poly = plt.Circle((0,0), radius=points, fill=False, color='green', lw=3)
+        else:
+            poly = plt.Polygon(xy=points, fill=False, closed=True, color='green', lw=3)
+        axes.add_patch(poly)
+    else:
+        axes = fig.add_subplot(111, projection="3d")
 
-    plt.xlim(-5, 10)
-    plt.ylim(-5, 10)
-    # plt.grid()
-    # axes = plt.gca()
-    axes.set_aspect("equal")
+        hull = ConvexHull(list(points))
+        for s in hull.simplices:
+            face = Poly3DCollection(points[s])
+            face.set_color('g')
+            face.set_alpha(0.5)
+            axes.add_collection3d(face)
 
-    print(type(axes))
-    poly = plt.Polygon(xy=points, fill=False, closed=True, color='green', lw=3)
-    axes.add_patch(poly)
-    # plt.show()
-
-    axes.get_xaxis().set_visible(False)
-    axes.get_yaxis().set_visible(False)
 
     canvas1 = FigureCanvasTkAgg(fig, master=window)
     # canvas1.draw()
@@ -146,17 +156,30 @@ btn.grid(column=1, row=0)
 window.mainloop()
 
 
-figure = Triangle([3,4, 90])
-figure.info()
+
+# mA = [[0,0,0], [1,0,0], [0,1,0], [1,1,0], [0.5,0.5,1]]
+A = np.array([[0,0,0], [1,0,0], [0,1,0], [1,1,0], [0.5,0.5,1]])
+
+
+figure = Cube([0.5])
 print(figure.building())
+A=figure.building()
 
-figure = Rectangle([4,5])
-figure.info()
-print(figure.building())
+fig = plt.figure(figsize=(3,3))
+axes = fig.add_subplot(111, projection="3d")
 
+hull = ConvexHull(list(A))
+for s in hull.simplices:
+    face = Poly3DCollection(A[s])
+    face.set_color('g')
+    face.set_alpha(0.5)
+    axes.add_collection3d(face)
 
+# hull = ConvexHull(mA)
+# for s in hull.simplices:
+#     tri = Poly3DCollection(mA[s])
+#     tri.set_color(color)
+#     tri.set_alpha(0.5)
+#     axes.add_collection3d(tri)
+# plt.show()
 
-params = [3,5,8]
-print(params)
-scale_params = list(map(lambda x: x/max(params), params))
-print(scale_params)
