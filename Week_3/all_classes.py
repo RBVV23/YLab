@@ -155,12 +155,13 @@ class Trapezoid(PlanShape):
         self.b = parameters[1]
         self.c = parameters[2]
         self.alpha = parameters[3]
-        self.d = sqrt((self.c/sin(pi*self.alpha/180))**2 + (self.b - self.a - self.c*cos(pi*self.alpha/180))**2)
+        self.d = sqrt((self.c*sin(pi*self.alpha/180))**2 + \
+                      (max(self.b, self.a) - min(self.b, self.a) - self.c*cos(pi*self.alpha/180))**2)
         self.betta = 180 - self.alpha
         super().__init__()
 
     def lebesgue_measure(self):
-        h = self.c/sin(pi*self.alpha/180)
+        h = self.c*sin(pi*self.alpha/180)
         return 0.5*(self.a+self.b)*h
 
     def border_lebesgue_measure(self):
