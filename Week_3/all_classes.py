@@ -1,8 +1,10 @@
 from math import sin, pi, sqrt, cos
+import numpy as np
 
 
 class Shape():
     title = 'Shape'
+    precision = 3
     # для плоских фигур мера Лебега - это площадь, а для объемных - объем
     def __init__(self, a):
         self.a = a
@@ -20,6 +22,8 @@ class PlanShape(Shape):
     title = 'PlanShape'
     lebesgue_measure_name = 'Площадь'
     border_lebesgue_measure_name = 'Периметр'
+    is_plan = True
+    is_circle = False
 
     def __init__(self):
         # self.a = a
@@ -57,10 +61,10 @@ class Rhombus(PlanShape):
         super().__init__()
 
     def lebesgue_measure(self):
-        return self.a*self.b*sin(pi*self.alpha/180)
+        return round(self.a*self.b*sin(pi*self.alpha/180), self.precision)
 
     def border_lebesgue_measure(self):
-        return 2*(self.a + self.b)
+        return round(2*(self.a + self.b), self.precision)
 
 
     def building(self):
@@ -69,6 +73,7 @@ class Rhombus(PlanShape):
         D = (A[0] + self.b*cos(pi*self.alpha/180), A[1] + self.b*sin(pi*self.alpha/180))
         C = (D[0] + self.a, D[1])
         return (A,B,C,D)
+
 
 class Square(PlanShape):
     title = 'Square'
@@ -82,10 +87,10 @@ class Square(PlanShape):
 
 
     def lebesgue_measure(self):
-        return self.a*self.a
+        return round(self.a*self.a, self.precision)
 
     def border_lebesgue_measure(self):
-        return 4*self.a
+        return round(4*self.a, self.precision)
 
     def building(self):
         A = (0,0)
@@ -93,6 +98,7 @@ class Square(PlanShape):
         C = (B[0] + self.a, B[1])
         D = (C[0], C[1] - self.a)
         return (A,B,C,D)
+
 
 class Rectangle(PlanShape):
     title = 'Rectangle'
@@ -106,10 +112,10 @@ class Rectangle(PlanShape):
         super().__init__()
 
     def lebesgue_measure(self):
-        return self.a*self.b
+        return round(self.a*self.b, self.precision)
 
     def border_lebesgue_measure(self):
-        return 2*(self.a + self.b)
+        return round(2*(self.a + self.b), self.precision)
 
     def building(self):
         A = (0,0)
@@ -118,25 +124,30 @@ class Rectangle(PlanShape):
         D = (C[0], C[1] - self.b)
         return (A,B,C,D)
 
+
 class Disk(PlanShape):
     title = 'Disk'
     input_instructions = ['Введите радиус r: ']
+    is_circle = True
     def __init__(self, parameters):
         self.r = parameters[0]
         super().__init__()
 
 
     def lebesgue_measure(self):
-        return pi*self.r*self.r
+        return round(pi*self.r*self.r, self.precision)
 
     def border_lebesgue_measure(self):
-        return 2*pi*self.r
+        return round(2*pi*self.r, self.precision)
 
     def info(self):
         print(f'TITLE: {self.title}')
         print(f'\tself.r = {self.r}')
         print(f'\tself.area = {self.area}')
         print(f'\tself.perimeter = {self.perimeter}')
+
+    def building(self):
+        return self.r
 
 
 class Triangle(PlanShape):
@@ -152,10 +163,10 @@ class Triangle(PlanShape):
         super().__init__()
 
     def lebesgue_measure(self):
-        return 0.5*self.a*self.b*sin(pi*self.alpha/180)
+        return round(0.5*self.a*self.b*sin(pi*self.alpha/180), self.precision)
 
     def border_lebesgue_measure(self):
-        return self.a + self.b + self.c
+        return round(self.a + self.b + self.c, self.precision)
 
     def info(self):
         super().info()
@@ -167,6 +178,7 @@ class Triangle(PlanShape):
         B = (C[0] + self.a, C[1])
         A = (C[0] + self.b*cos(pi*self.alpha/180), C[1] + self.b*sin(pi*self.alpha/180))
         return (A,B,C)
+
 
 class Trapezoid(PlanShape):
     title = 'Trapezoid'
@@ -185,10 +197,10 @@ class Trapezoid(PlanShape):
 
     def lebesgue_measure(self):
         h = self.c*sin(pi*self.alpha/180)
-        return 0.5*(self.a+self.b)*h
+        return round(0.5*(self.a+self.b)*h, self.precision)
 
     def border_lebesgue_measure(self):
-        return self.a + self.b + self.c + self.d
+        return round(self.a + self.b + self.c + self.d, self.precision)
 
     def info(self):
         super().info()
@@ -201,10 +213,13 @@ class Trapezoid(PlanShape):
         C = (D[0] + self.b, D[1])
         return (A,B,C,D)
 
+
 class StereoShape(Shape):
     title = 'StereoShape'
     lebesgue_measure_name = 'Объем'
     border_lebesgue_measure_name = 'Площадь боковой поверхности'
+    is_plan = False
+    is_polyhedron = True
 
     def __init__(self):
         self.volume = self.lebesgue_measure()
@@ -229,16 +244,17 @@ class StereoShape(Shape):
 
 class Ball(StereoShape):
     title = 'Ball'
+    is_polyhedron = False
     def __init__(self, r):
         self.r = r
         super().__init__()
 
 
     def lebesgue_measure(self):
-        return 4*pi*self.r*self.r*self.r/3
+        return round(4*pi*self.r*self.r*self.r/3, self.precision)
 
     def border_lebesgue_measure(self):
-        return 4*pi*self.r*self.r
+        return round(4*pi*self.r*self.r, self.precision)
 
     def info(self):
         print(f'TITLE: {self.title}')
@@ -249,66 +265,106 @@ class Ball(StereoShape):
 
 class Cube(StereoShape):
     title = 'Cube'
-    def __init__(self, a):
-        self.a = a
+    input_instructions = ['Введите ребро a: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
         self.b = self.a
         self.h = self.a
         super().__init__()
 
 
     def lebesgue_measure(self):
-        return self.a*self.a*self.a
+        return round(self.a*self.a*self.a, self.precision)
 
     def border_lebesgue_measure(self):
-        return 6*self.a*self.a
+        return round(6*self.a*self.a, self.precision)
 
+    def building(self):
+        A = np.array([0, 0, 0])
+        B = np.array([self.a, 0, 0])
+        C = np.array([0, self.a, 0])
+        D = np.array([self.a, self.a, 0])
+
+        A_1 = A + [0,0, self.a]
+        B_1 = B + [0,0, self.a]
+        C_1 = C + [0,0, self.a]
+        D_1 = D + [0,0, self.a]
+        return np.array([A,B,C,D, A_1,B_1,C_1,D_1])
 
 class Cuboid(StereoShape):
     title = 'Cuboid'
-    def __init__(self, a, b, h):
-        self.a = a
-        self.b = b
-        self.h = h
+    input_instructions = ['Введите ребро a: ',
+                          'Введите ребро b: ',
+                          'Введите ребро c: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
+        self.b = parameters[1]
+        self.h = parameters[2]
         super().__init__()
 
     def lebesgue_measure(self):
-        return self.a*self.b*self.h
+        return round(self.a*self.b*self.h, self.precision)
 
     def border_lebesgue_measure(self):
-        return 2*(self.a*self.b + self.b*self.h + self.a*self.h)
+        return round(2*(self.a*self.b + self.b*self.h + self.a*self.h), self.precision)
 
+    def building(self):
+        A = np.array([0, 0, 0])
+        B = np.array([self.a, 0, 0])
+        C = np.array([0, self.b, 0])
+        D = np.array([self.a, self.b, 0])
+
+        A_1 = A + [0,0, self.h]
+        B_1 = B + [0,0, self.h]
+        C_1 = C + [0,0, self.h]
+        D_1 = D + [0,0, self.h]
+        return np.array([A,B,C,D, A_1,B_1,C_1,D_1])
 
 class RightTetrahedron(StereoShape):
     title = 'Right tetrahedron'
-    def __init__(self, a):
-        self.a = a
-        self.b = a
+    input_instructions = ['Введите ребро a: ']
+    def __init__(self, parameters):
+        self.a = parameters[0]
+        self.b = self.a
         self.h = sqrt(2*self.a*self.a/3)
         self.alpha = 60
         super().__init__()
 
     def lebesgue_measure(self):
         S_base = 0.5*self.a*self.b*sin(pi*self.alpha/180)
-        return S_base*self.h/3
+        return round(S_base*self.h/3, self.precision)
 
     def border_lebesgue_measure(self):
         S_base = 0.5 * self.a * self.b * sin(pi * self.alpha / 180)
-        return 4*S_base
+        return round(4*S_base, self.precision)
+
+    def building(self):
+        C = np.array([0, 0, 0])
+        B = np.array([self.a, 0, 0])
+        A = np.array([C[0]+self.a*cos(pi * self.alpha / 180), C[1]+self.a*sin(pi * self.alpha / 180), 0])
+        h = sqrt(2/3)*self.a
+        Ort_center = np.array([2*C[0]+self.a*cos(pi * self.alpha / 360)/3, 2*C[1]+self.a*sin(pi * self.alpha / 360)/3, 0])
+        H = Ort_center + np.array([0,0,h])
+
+        return np.array([A,B,C,H])
 
 
 class RightCylinder(StereoShape):
     title = 'Right cylinder'
-    def __init__(self, r, h):
-        self.r = r
-        self.h = h
+    input_instructions = ['Введите радиус r: ',
+                          'Введите высоту h: ']
+    is_polyhedron = False
+    def __init__(self, parameters):
+        self.r = parameters[0]
+        self.h = parameters[1]
         super().__init__()
 
 
     def lebesgue_measure(self):
-        return pi*self.r*self.r*self.h
+        return round(pi*self.r*self.r*self.h, self.precision)
 
     def border_lebesgue_measure(self):
-        return 2*pi*self.r*(self.r + self.h)
+        return round(2*pi*self.r*(self.r + self.h), self.precision)
 
     def info(self):
         print(f'TITLE: {self.title}')
@@ -317,21 +373,26 @@ class RightCylinder(StereoShape):
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
 
+    def building(self):
+        return np.array([self.r, self.h])
 
 class RightCone(StereoShape):
     title = 'Right cone'
-    def __init__(self, r, h):
-        self.r = r
-        self.h = h
+    input_instructions = ['Введите радиус r: ',
+                          'Введите высоту h: ']
+    is_polyhedron = False
+    def __init__(self, parameters):
+        self.r = parameters[0]
+        self.h = parameters[1]
         super().__init__()
 
 
     def lebesgue_measure(self):
-        return pi*self.r*self.r*self.h/3
+        return round(pi*self.r*self.r*self.h/3, self.precision)
 
     def border_lebesgue_measure(self):
         slant_height = sqrt(self.r**2 + self.h**2)
-        return pi*self.r*(self.r + slant_height)
+        return round(pi*self.r*(self.r + slant_height), self.precision)
 
     def info(self):
         print(f'TITLE: {self.title}')
@@ -339,3 +400,6 @@ class RightCone(StereoShape):
         print(f'\tself.h = {self.h}')
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
+
+    def building(self):
+        return np.array([self.r, self.h])
