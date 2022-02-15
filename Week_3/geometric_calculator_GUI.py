@@ -1,6 +1,7 @@
 from tkinter import *
 from all_classes import *
 from tkinter.ttk import Combobox
+from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from matplotlib import pyplot as plt
@@ -76,9 +77,10 @@ def find_center_3D(points):
     center = (x_sum/len(points), y_sum/len(points), z_sum/len(points))
     return center
 
+
 def choose_mode():
     FigureType = class_dict[combo.get()]
-    text = f'Выбранная фигура: {FigureType.title}'
+    text = f'Текущий класс: {FigureType.title}'
     lbl.configure(text=text)
 
 
@@ -87,8 +89,22 @@ def choose_mode():
         input_ents[n].configure(state='normal')
     lbl.configure(text=text, fg='green')
     btn_2 = Button(window, text="Подтвердить\nпараметры", font='Arial 18',
-                   command=lambda: choose_parameters(FigureType))
+                   command=lambda: check_inputs(FigureType))
     btn_2.grid(column=1, row=5)
+
+
+def check_inputs(FigureType):
+    flag = True
+    for n, instruction in enumerate(FigureType.input_instructions):
+        if float(input_ents[n].get()) <= 0:
+            messagebox.showinfo('Некорректный ввод', 'Введите положительное число!')
+            input_ents[n].delete(0, END)
+            input_ents[n].focus()
+            flag = False
+    if flag:
+        choose_parameters(FigureType)
+    else:
+        choose_mode()
 
 
 def choose_parameters(FigureType):
@@ -110,9 +126,9 @@ def choose_parameters(FigureType):
     result_blm_lbl = Label(window, text=f'{Figure.lebesgue_measure_name}:', height=2, width=25, font='Arial 18')
     result_blm_lbl.grid(column=0, row=7)
 
-    final_lbl_3 = Label(window, text=Figure.title, height=2, width=10, font='Arial 18')
+    final_lbl_3 = Label(window, text=f'{Figure.point_counter()}', height=2, width=10, font='Arial 18')
     final_lbl_3.grid(column=1, row=8)
-    result_cls_lbl = Label(window, text='Класс фигуры: ', height=2, width=25, font='Arial 18')
+    result_cls_lbl = Label(window, text='Количество опорных точек:', height=2, width=25, font='Arial 18')
     result_cls_lbl.grid(column=0, row=8)
 
     fig = plt.figure(figsize=(3,3))
@@ -189,7 +205,7 @@ def choose_parameters(FigureType):
 
 
     canvas1 = FigureCanvasTkAgg(fig, master=window)
-    canvas1.get_tk_widget().grid(column=3, row=0, rowspan=9)
+    canvas1.get_tk_widget().grid(column=3, row=0, rowspan=9, columnspan=9)
 
 
 
@@ -217,3 +233,8 @@ btn.grid(column=1, row=0)
 # window.geometry(f'{H}x{W}')
 
 window.mainloop()
+
+# Figure = Disk([5])
+# print(Figure.building())
+#
+# print(len(Figure.building()))
