@@ -234,7 +234,3 @@ btn.grid(column=1, row=0)
 
 window.mainloop()
 
-# Figure = Disk([5])
-# print(Figure.building())
-#
-# print(len(Figure.building()))
