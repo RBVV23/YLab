@@ -5,18 +5,37 @@ import numpy as np
 class Shape():
     title = 'Shape'
     precision = 3
-    # для плоских фигур мера Лебега - это площадь, а для объемных - объем
-    def __init__(self, a):
-        self.a = a
+    input_instructions = []
 
+    def __init__(self, parameters):
+        self.a = parameters[0]
+
+    # для плоских фигур мера Лебега - это площадь, а для объемных - объем
+    # этот метод переопределяется и становится специфичным для каждого класса
     def lebesgue_measure(self):
         print('Метод "Shape.lebesgue_measure()"')
-        # pass
 
     # для плоских фигур мера Лебега границы - это периметр, а для объёмных - площадь поверхности
+    # этот метод переопределяется и становится специфичным для каждого класса
     def border_lebesgue_measure(self):
         print('Метод "Shape.border_lebesgue_measure()"')
 
+    def building(self):
+        return None
+
+    def point_counter(self):
+        return len(self.building())
+
+
+    @staticmethod
+    def print_pi():
+        print(f'Значения констант, используемые при расчётах:\n\t\t {None}')
+
+    @classmethod
+    def help(cls):
+        print('Формат ввода данных:')
+        for instr in cls.input_instructions:
+            print(f'\t {instr[:-2]}')
 
 class PlanShape(Shape):
     title = 'PlanShape'
@@ -26,7 +45,6 @@ class PlanShape(Shape):
     is_circle = False
 
     def __init__(self):
-        # self.a = a
         self.area = self.lebesgue_measure()
         self.perimeter = self.border_lebesgue_measure()
 
@@ -59,6 +77,7 @@ class Rhombus(PlanShape):
         self.alpha = parameters[1]
         self.betta = 180 - self.alpha
         super().__init__()
+
 
     def lebesgue_measure(self):
         return round(self.a*self.b*sin(pi*self.alpha/180), self.precision)
@@ -147,8 +166,11 @@ class Disk(PlanShape):
         print(f'\tself.perimeter = {self.perimeter}')
 
     def building(self):
-        return self.r
+        return np.array([self.r])
 
+    @staticmethod
+    def print_pi():
+        print(f'Значения констант, используемые при расчётах:\n\t\t \u03C0 = {pi}')
 
 class Triangle(PlanShape):
     title = 'Triangle'
@@ -268,6 +290,10 @@ class Ball(StereoShape):
     def building(self):
         return np.array([self.r])
 
+    @staticmethod
+    def print_pi():
+        print(f'Значения констант, используемые при расчётах:\n\t\t \u03C0 = {pi}')
+
 class Cube(StereoShape):
     title = 'Cube'
     input_instructions = ['Введите ребро a: ']
@@ -381,6 +407,10 @@ class RightCylinder(StereoShape):
     def building(self):
         return np.array([self.r, self.h])
 
+    @staticmethod
+    def print_pi():
+        print(f'Значения констант, используемые при расчётах:\n\t\t \u03C0 = {pi}')
+
 class RightCone(StereoShape):
     title = 'Right cone'
     input_instructions = ['Введите радиус r: ',
@@ -408,3 +438,7 @@ class RightCone(StereoShape):
 
     def building(self):
         return np.array([self.r, self.h])
+
+    @staticmethod
+    def print_pi():
+        print(f'Значения констант, используемые при расчётах:\n\t\t \u03C0 = {pi}')
