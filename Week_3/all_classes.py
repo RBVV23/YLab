@@ -220,6 +220,7 @@ class StereoShape(Shape):
     border_lebesgue_measure_name = 'Площадь боковой поверхности'
     is_plan = False
     is_polyhedron = True
+    is_ball = False
 
     def __init__(self):
         self.volume = self.lebesgue_measure()
@@ -244,9 +245,11 @@ class StereoShape(Shape):
 
 class Ball(StereoShape):
     title = 'Ball'
+    input_instructions = ['Введите радиус r: ']
     is_polyhedron = False
-    def __init__(self, r):
-        self.r = r
+    is_ball = True
+    def __init__(self, parameters):
+        self.r = parameters[0]
         super().__init__()
 
 
@@ -262,6 +265,8 @@ class Ball(StereoShape):
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
 
+    def building(self):
+        return np.array([self.r])
 
 class Cube(StereoShape):
     title = 'Cube'
