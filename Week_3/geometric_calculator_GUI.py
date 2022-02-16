@@ -5,8 +5,6 @@ from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
-
-
 class_dict = {'Круг': Disk,
               'Квадрат': Square,
               'Прямоугольник': Rectangle,
@@ -20,7 +18,6 @@ class_dict = {'Круг': Disk,
               'Правильный цилиндр': RightCylinder,
               'Шар': Ball
               }
-
 
 window = Tk()
 
@@ -72,39 +69,42 @@ def choose_parameters(FigureType):
     for n, instruction in enumerate(FigureType.input_instructions):
         parameter = float(input_ents[n].get())
         parameters.append(parameter)
-
     Figure = FigureType(parameters)
-    points = Figure.get_for_drawing()
-    final_lbl_1 = Label(window, text=Figure.border_lebesgue_measure(), height=2, width=10, font='Arial 18')
-    final_lbl_1.grid(column=1, row=6)
-    result_lm_lbl = Label(window, text=f'{Figure.border_lebesgue_measure_name}:', height=2, width=25, font='Arial 18')
-    result_lm_lbl.grid(column=0, row=6)
+    show_results(Figure)
 
-    final_lbl_2 = Label(window, text=Figure.lebesgue_measure(), height=2, width=10, font='Arial 18')
-    final_lbl_2.grid(column=1, row=7)
-    result_blm_lbl = Label(window, text=f'{Figure.lebesgue_measure_name}:', height=2, width=25, font='Arial 18')
-    result_blm_lbl.grid(column=0, row=7)
+def show_results(Figure):
 
-    final_lbl_3 = Label(window, text=f'{Figure.point_counter()}', height=2, width=10, font='Arial 18')
-    final_lbl_3.grid(column=1, row=8)
-    result_cls_lbl = Label(window, text='Количество опорных точек:', height=2, width=25, font='Arial 18')
-    result_cls_lbl.grid(column=0, row=8)
+    name_result_lbl_1 = Label(window, text=f'{Figure.border_lebesgue_measure_name}:', height=2, width=25,
+                              font='Arial 18')
+    name_result_lbl_1.grid(column=0, row=6)
+    result_lbl_1 = Label(window, text=Figure.border_lebesgue_measure(), height=2, width=10, font='Arial 18')
+    result_lbl_1.grid(column=1, row=6)
+
+    name_result_lbl_2 = Label(window, text=f'{Figure.lebesgue_measure_name}:', height=2, width=25, font='Arial 18')
+    name_result_lbl_2.grid(column=0, row=7)
+    result_lbl_2 = Label(window, text=Figure.lebesgue_measure(), height=2, width=10, font='Arial 18')
+    result_lbl_2.grid(column=1, row=7)
+
 
     fig = Builder(Figure)
     fig.to_draw()
 
-    canvas1 = FigureCanvasTkAgg(fig.drawing, master=window)
-    canvas1.get_tk_widget().grid(column=3, row=0, rowspan=9, columnspan=9)
+    result_screen = FigureCanvasTkAgg(fig.drawing, master=window)
+    result_screen.get_tk_widget().grid(column=3, row=0, rowspan=9, columnspan=9)
 
 
 
 
 window.title('Добро пожаловать в приложение "Геометрический калькулятор на костылях"!')
 
-class_names = ('Круг', 'Квадрат', 'Прямоугольник', 'Треугольник', 'Трапеция', 'Ромб')
+font = ("Arial", 18, "normal")
+combo = Combobox(window,
+                 values = tuple(class_dict.keys()),
+                 height=2,
+                 width=25,
+                 font=font)
 
-combo = Combobox(window, height=2, width=25, font='Arial 18')
-combo['values'] = tuple(class_dict.keys())
+window.option_add('*TCombobox*Listbox.font', font)
 combo.current(0)
 
 combo.grid(column=0, row=0)

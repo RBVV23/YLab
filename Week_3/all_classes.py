@@ -98,15 +98,15 @@ class Maths():
             self.lebesgue_measure_name = 'Площадь'
             self.border_lebesgue_measure_name = 'Периметр'
 
-            self.area = figure.lebesgue_measure()
-            self.perimeter = figure.border_lebesgue_measure()
+            # self.area = figure.lebesgue_measure()
+            # self.perimeter = figure.border_lebesgue_measure()
 
         else:
             self.lebesgue_measure_name = 'Объем'
             self.border_lebesgue_measure_name = 'Площадь боковой поверхности'
 
-            self.volume = figure.lebesgue_measure()
-            self.surface_area = figure.border_lebesgue_measure()
+        self.lebesgue_measure = figure.lebesgue_measure()
+        self.border_lebesgue_measure = figure.border_lebesgue_measure()
 
 
 class Shape():
@@ -281,6 +281,7 @@ class Disk(PlanShape):
     @staticmethod
     def print_pi():
         print(f'Значения констант, используемые при расчётах:\n\t\t \u03C0 = {pi}')
+
 
 class Triangle(PlanShape):
     title = 'Triangle'
