@@ -1,11 +1,121 @@
 from math import sin, pi, sqrt, cos
 import numpy as np
+import matplotlib.pyplot as plt
+from scipy.spatial import ConvexHull
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+class Builder():
+    def __init__(self, figure, height=6, width=6):
+        self.drawing = plt.figure(figsize=(height, width))
+        self.figure = figure
+        self.reference = figure.get_for_drawing()
+
+    def set_figure_size(self):
+        if self.figure.is_solid_of_revolution:
+            self.size = 2 * self.reference
+        else:
+            points = self.reference
+            dim = points.shape[1]
+            maxs = np.zeros(dim) - float('inf')
+            mins = np.zeros(dim) + float('inf')
+            for i in range(dim):
+                for p in points:
+                    if p[i] > maxs[i]:
+                        maxs[i] = p[i]
+                    if p[i] < mins[i]:
+                        mins[i] = p[i]
+
+            self.size = max(maxs - mins)
+
+
+    def set_xy_limits(self):
+        if self.figure.is_plan:
+            plt.xlim(self.center[0] - self.size, self.center[0] + self.size)
+            plt.ylim(self.center[1] - self.size, self.center[1] + self.size)
+        else:
+            self.axes.set_xlim(self.center[0] - self.size, self.center[0] + self.size)
+            self.axes.set_ylim(self.center[1] - self.size, self.center[1] + self.size)
+            self.axes.set_zlim(self.center[2] - self.size, self.center[2] + self.size)
+
+
+    def set_center_point(self):
+        if self.figure.is_solid_of_revolution:
+            self.center = (0, 0)
+        else:
+            points = self.reference
+            dim = points.shape[1]
+            sums = np.zeros(dim)
+            for i in range(dim):
+                for p in points:
+                    sums[i] += p[i]
+                sums[i] /= points.shape[0]
+
+            self.center = sums
+
+
+    def to_draw(self):
+        if self.figure.is_plan:
+            axes = self.drawing.add_subplot(111)
+            plt.grid()
+            axes = plt.gca()
+            axes.set_aspect("equal")
+            self.set_center_point()
+            self.set_figure_size()
+            self.set_xy_limits()
+
+            if self.figure.is_solid_of_revolution:
+                poly = plt.Circle(self.center, radius=self.reference, fill=False, color='green', lw=3)
+            else:
+
+                poly = plt.Polygon(xy=self.reference, fill=False, closed=True, color='green', lw=3)
+            axes.add_patch(poly)
+        else:
+            self.axes = self.drawing.add_subplot(111, projection="3d")
+
+            if self.figure.is_polyhedron:
+                self.set_center_point()
+                self.set_figure_size()
+                self.set_xy_limits()
+
+                points = self.reference
+                hull = ConvexHull(list(points))
+                for s in hull.simplices:
+                    face = Poly3DCollection(points[s])
+                    face.set_color('g')
+                    face.set_alpha(0.5)
+                    self.axes.add_collection3d(face)
+            else:
+                x = self.reference[0]
+                y = self.reference[1]
+                z = self.reference[2]
+                self.axes.plot_surface(x, y, z, color='g')
+
+
+
+class Maths():
+    def __init__(self, figure):
+        if figure.is_plan:
+            self.lebesgue_measure_name = 'Площадь'
+            self.border_lebesgue_measure_name = 'Периметр'
+
+            self.area = figure.lebesgue_measure()
+            self.perimeter = figure.border_lebesgue_measure()
+
+        else:
+            self.lebesgue_measure_name = 'Объем'
+            self.border_lebesgue_measure_name = 'Площадь боковой поверхности'
+
+            self.volume = figure.lebesgue_measure()
+            self.surface_area = figure.border_lebesgue_measure()
 
 
 class Shape():
     title = 'Shape'
     precision = 3
     input_instructions = []
+    is_solid_of_revolution = False
+    dl = 100
+    dphi = 360
 
     def __init__(self, parameters):
         self.a = parameters[0]
@@ -20,11 +130,11 @@ class Shape():
     def border_lebesgue_measure(self):
         print('Метод "Shape.border_lebesgue_measure()"')
 
-    def building(self):
+    def get_for_drawing(self):
         return None
 
     def point_counter(self):
-        return len(self.building())
+        return len(self.get_for_drawing())
 
 
     @staticmethod
@@ -42,7 +152,7 @@ class PlanShape(Shape):
     lebesgue_measure_name = 'Площадь'
     border_lebesgue_measure_name = 'Периметр'
     is_plan = True
-    is_circle = False
+
 
     def __init__(self):
         self.area = self.lebesgue_measure()
@@ -86,12 +196,12 @@ class Rhombus(PlanShape):
         return round(2*(self.a + self.b), self.precision)
 
 
-    def building(self):
+    def get_for_drawing(self):
         A = (0,0)
         B = (A[0] + self.a, 0)
         D = (A[0] + self.b*cos(pi*self.alpha/180), A[1] + self.b*sin(pi*self.alpha/180))
         C = (D[0] + self.a, D[1])
-        return (A,B,C,D)
+        return np.array([A,B,C,D])
 
 
 class Square(PlanShape):
@@ -111,12 +221,12 @@ class Square(PlanShape):
     def border_lebesgue_measure(self):
         return round(4*self.a, self.precision)
 
-    def building(self):
+    def get_for_drawing(self):
         A = (0,0)
         B = (0, A[1] + self.a)
         C = (B[0] + self.a, B[1])
         D = (C[0], C[1] - self.a)
-        return (A,B,C,D)
+        return np.array([A,B,C,D])
 
 
 class Rectangle(PlanShape):
@@ -136,18 +246,18 @@ class Rectangle(PlanShape):
     def border_lebesgue_measure(self):
         return round(2*(self.a + self.b), self.precision)
 
-    def building(self):
+    def get_for_drawing(self):
         A = (0,0)
         B = (0, A[1] + self.b)
         C = (B[0] + self.a, B[1])
         D = (C[0], C[1] - self.b)
-        return (A,B,C,D)
+        return np.array([A,B,C,D])
 
 
 class Disk(PlanShape):
     title = 'Disk'
     input_instructions = ['Введите радиус r: ']
-    is_circle = True
+    is_solid_of_revolution = True
     def __init__(self, parameters):
         self.r = parameters[0]
         super().__init__()
@@ -165,7 +275,7 @@ class Disk(PlanShape):
         print(f'\tself.area = {self.area}')
         print(f'\tself.perimeter = {self.perimeter}')
 
-    def building(self):
+    def get_for_drawing(self):
         return np.array([self.r])
 
     @staticmethod
@@ -195,11 +305,11 @@ class Triangle(PlanShape):
         # print(f'\tself.c = {self.c}')
         # print(f'\tself.gamma = {self.gamma}')
 
-    def building(self):
+    def get_for_drawing(self):
         C = (0,0)
         B = (C[0] + self.a, C[1])
         A = (C[0] + self.b*cos(pi*self.alpha/180), C[1] + self.b*sin(pi*self.alpha/180))
-        return (A,B,C)
+        return np.array([A,B,C])
 
 
 class Trapezoid(PlanShape):
@@ -228,12 +338,12 @@ class Trapezoid(PlanShape):
         super().info()
         print(f'\tself.c = {self.c}')
 
-    def building(self):
+    def get_for_drawing(self):
         A = (0,0)
         B = (A[0] + self.a, 0)
         D = (A[0] + self.c*cos(pi*self.alpha/180), A[1] + self.c*sin(pi*self.alpha/180))
         C = (D[0] + self.b, D[1])
-        return (A,B,C,D)
+        return np.array([A,B,C,D])
 
 
 class StereoShape(Shape):
@@ -269,7 +379,7 @@ class Ball(StereoShape):
     title = 'Ball'
     input_instructions = ['Введите радиус r: ']
     is_polyhedron = False
-    is_ball = True
+    is_solid_of_revolution = True
     def __init__(self, parameters):
         self.r = parameters[0]
         super().__init__()
@@ -287,8 +397,17 @@ class Ball(StereoShape):
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
 
-    def building(self):
-        return np.array([self.r])
+    def get_for_drawing(self):
+        dphi = self.dphi
+        r = self.r
+
+        u = np.linspace(0, 2 * pi, dphi)
+        v = np.linspace(0, pi, dphi // 2)
+
+        x = r * np.outer(np.cos(u), np.sin(v))
+        y = r * np.outer(np.sin(u), np.sin(v))
+        z = r * np.outer(np.ones(np.size(u)), np.cos(v))
+        return np.array([x, y, z])
 
     @staticmethod
     def print_pi():
@@ -310,7 +429,7 @@ class Cube(StereoShape):
     def border_lebesgue_measure(self):
         return round(6*self.a*self.a, self.precision)
 
-    def building(self):
+    def get_for_drawing(self):
         A = np.array([0, 0, 0])
         B = np.array([self.a, 0, 0])
         C = np.array([0, self.a, 0])
@@ -339,7 +458,7 @@ class Cuboid(StereoShape):
     def border_lebesgue_measure(self):
         return round(2*(self.a*self.b + self.b*self.h + self.a*self.h), self.precision)
 
-    def building(self):
+    def get_for_drawing(self):
         A = np.array([0, 0, 0])
         B = np.array([self.a, 0, 0])
         C = np.array([0, self.b, 0])
@@ -369,7 +488,7 @@ class RightTetrahedron(StereoShape):
         S_base = 0.5 * self.a * self.b * sin(pi * self.alpha / 180)
         return round(4*S_base, self.precision)
 
-    def building(self):
+    def get_for_drawing(self):
         C = np.array([0, 0, 0])
         B = np.array([self.a, 0, 0])
         A = np.array([C[0]+self.a*cos(pi * self.alpha / 180), C[1]+self.a*sin(pi * self.alpha / 180), 0])
@@ -385,6 +504,7 @@ class RightCylinder(StereoShape):
     input_instructions = ['Введите радиус r: ',
                           'Введите высоту h: ']
     is_polyhedron = False
+    is_solid_of_revolution = True
     def __init__(self, parameters):
         self.r = parameters[0]
         self.h = parameters[1]
@@ -404,8 +524,23 @@ class RightCylinder(StereoShape):
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
 
-    def building(self):
-        return np.array([self.r, self.h])
+    def get_for_drawing(self):
+        dl = self.dl
+        dphi = self.dphi
+
+        h = self.h
+        r = self.r
+
+        u = np.linspace(0, 2 * pi, dphi)
+        dh = np.linspace(0, 1, dl)
+        x = np.outer(np.sin(u), np.ones(len(dh)))
+        y = np.outer(np.cos(u), np.ones(len(dh)))
+
+        x = r * np.outer(np.sin(u), np.ones(len(dh)))
+        y = r * np.outer(np.cos(u), np.ones(len(dh)))
+        z = h * np.outer(np.ones(len(u)), dh)
+
+        return np.array([x,y,z])
 
     @staticmethod
     def print_pi():
@@ -416,6 +551,7 @@ class RightCone(StereoShape):
     input_instructions = ['Введите радиус r: ',
                           'Введите высоту h: ']
     is_polyhedron = False
+    is_solid_of_revolution = True
     def __init__(self, parameters):
         self.r = parameters[0]
         self.h = parameters[1]
@@ -436,8 +572,23 @@ class RightCone(StereoShape):
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
 
-    def building(self):
-        return np.array([self.r, self.h])
+    def get_for_drawing(self):
+        dl = self.dl
+        dphi = self.dphi
+
+        h = self.h
+        r = self.r
+
+        u = np.linspace(0, 2 * pi, dphi)
+        dh = np.linspace(0, 1, dl)
+        x = np.outer(np.sin(u), np.ones(len(dh)))
+        y = np.outer(np.cos(u), np.ones(len(dh)))
+
+        x = r * np.outer(np.sin(u), dh)
+        y = r * np.outer(np.cos(u), dh)
+        z = h * np.outer(np.ones(len(u)), dh)
+
+        return np.array([x,y,z])
 
     @staticmethod
     def print_pi():
