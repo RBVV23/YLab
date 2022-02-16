@@ -91,24 +91,6 @@ class Builder():
                 self.axes.plot_surface(x, y, z, color='g')
 
 
-
-class Maths():
-    def __init__(self, figure):
-        if figure.is_plan:
-            self.lebesgue_measure_name = 'Площадь'
-            self.border_lebesgue_measure_name = 'Периметр'
-
-            # self.area = figure.lebesgue_measure()
-            # self.perimeter = figure.border_lebesgue_measure()
-
-        else:
-            self.lebesgue_measure_name = 'Объем'
-            self.border_lebesgue_measure_name = 'Площадь боковой поверхности'
-
-        self.lebesgue_measure = figure.lebesgue_measure()
-        self.border_lebesgue_measure = figure.border_lebesgue_measure()
-
-
 class Shape():
     title = 'Shape'
     precision = 3
@@ -146,6 +128,7 @@ class Shape():
         print('Формат ввода данных:')
         for instr in cls.input_instructions:
             print(f'\t {instr[:-2]}')
+
 
 class PlanShape(Shape):
     title = 'PlanShape'
@@ -414,6 +397,7 @@ class Ball(StereoShape):
     def print_pi():
         print(f'Значения констант, используемые при расчётах:\n\t\t \u03C0 = {pi}')
 
+
 class Cube(StereoShape):
     title = 'Cube'
     input_instructions = ['Введите ребро a: ']
@@ -441,6 +425,7 @@ class Cube(StereoShape):
         C_1 = C + [0,0, self.a]
         D_1 = D + [0,0, self.a]
         return np.array([A,B,C,D, A_1,B_1,C_1,D_1])
+
 
 class Cuboid(StereoShape):
     title = 'Cuboid'
@@ -470,6 +455,7 @@ class Cuboid(StereoShape):
         C_1 = C + [0,0, self.h]
         D_1 = D + [0,0, self.h]
         return np.array([A,B,C,D, A_1,B_1,C_1,D_1])
+
 
 class RightTetrahedron(StereoShape):
     title = 'Right tetrahedron'
@@ -547,6 +533,7 @@ class RightCylinder(StereoShape):
     def print_pi():
         print(f'Значения констант, используемые при расчётах:\n\t\t \u03C0 = {pi}')
 
+
 class RightCone(StereoShape):
     title = 'Right cone'
     input_instructions = ['Введите радиус r: ',
@@ -562,6 +549,7 @@ class RightCone(StereoShape):
     def lebesgue_measure(self):
         return round(pi*self.r*self.r*self.h/3, self.precision)
 
+
     def border_lebesgue_measure(self):
         slant_height = sqrt(self.r**2 + self.h**2)
         return round(pi*self.r*(self.r + slant_height), self.precision)
@@ -572,6 +560,7 @@ class RightCone(StereoShape):
         print(f'\tself.h = {self.h}')
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
+
 
     def get_for_drawing(self):
         dl = self.dl
