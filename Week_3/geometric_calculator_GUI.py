@@ -24,6 +24,7 @@ window = Tk()
 max_entry_fields = 4
 entry_instruction_lbls = []
 input_ents = []
+
 for n in range(1, max_entry_fields+1):
     lbl = Label(window, text=f'Поле ввода параметра #{n}: ', height=2, width=25, font='Arial 18')
     lbl.grid(column=0, row=n)
@@ -72,6 +73,7 @@ def choose_parameters(FigureType):
     Figure = FigureType(parameters)
     show_results(Figure)
 
+
 def show_results(Figure):
 
     name_result_lbl_1 = Label(window, text=f'{Figure.border_lebesgue_measure_name}:', height=2, width=25,
@@ -99,7 +101,7 @@ window.title('Добро пожаловать в приложение "Геом�
 
 font = ("Arial", 18, "normal")
 combo = Combobox(window,
-                 values = tuple(class_dict.keys()),
+                 values=tuple(class_dict.keys()),
                  height=2,
                  width=25,
                  font=font)
@@ -109,11 +111,11 @@ combo.current(0)
 
 combo.grid(column=0, row=0)
 
-lbl = Label(window, text='Выбранная фигура: ', height=4, width=25, font='Arial 18')
-lbl.grid(column=0, row=5)
+figure_type_lbl = Label(window, text='Выбранная фигура: ', height=4, width=25, font='Arial 18')
+figure_type_lbl.grid(column=0, row=5)
 
-btn = Button(window, text="Выбрать\nфигуру", command=choose_mode, font='Arial 18')
-btn.grid(column=1, row=0)
+choose_figure_btn = Button(window, text="Выбрать\nфигуру", command=choose_mode, font='Arial 18')
+choose_figure_btn.grid(column=1, row=0)
 
 
 # задание размеров окна
