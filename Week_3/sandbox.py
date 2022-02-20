@@ -96,3 +96,30 @@ def show_results(Figure):
 
 
 
+window.title('Добро пожаловать в приложение "Геометрический калькулятор на костылях"!')
+
+font = ("Arial", 18, "normal")
+combo = Combobox(window,
+                 values=tuple(class_dict.keys()),
+                 height=2,
+                 width=25,
+                 font=font)
+
+window.option_add('*TCombobox*Listbox.font', font)
+combo.current(0)
+
+combo.grid(column=0, row=0)
+
+figure_type_lbl = Label(window, text='Выбранная фигура: ', height=4, width=25, font='Arial 18')
+figure_type_lbl.grid(column=0, row=5)
+
+choose_figure_btn = Button(window, text="Выбрать\nфигуру", command=choose_mode, font='Arial 18')
+choose_figure_btn.grid(column=1, row=0)
+
+
+# задание размеров окна
+# H = 1200
+# W = 675
+# window.geometry(f'{H}x{W}')
+
+window.mainloop()
