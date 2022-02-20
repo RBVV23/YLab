@@ -40,7 +40,6 @@ def choose_mode():
     text = f'Текущий класс: {FigureType.title}'
     lbl.configure(text=text)
 
-
     for n, instruction in enumerate(FigureType.input_instructions):
         entry_instruction_lbls[n].configure(text=instruction)
         input_ents[n].configure(state='normal')
@@ -86,7 +85,6 @@ def show_results(Figure):
     name_result_lbl_2.grid(column=0, row=7)
     result_lbl_2 = Label(window, text=Figure.lebesgue_measure(), height=2, width=10, font='Arial 18')
     result_lbl_2.grid(column=1, row=7)
-
 
     fig = Builder(Figure)
     fig.to_draw()
