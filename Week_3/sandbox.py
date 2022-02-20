@@ -3,10 +3,7 @@ from all_classes import *
 from tkinter.ttk import Combobox
 from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from matplotlib import pyplot as plt
-import numpy as np
-from scipy.spatial import ConvexHull
+
 
 
 
