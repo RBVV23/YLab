@@ -22,7 +22,7 @@ def my_route_length(route, address=address):
 
     start = my_euclid_dist(address[0], address[route[0]])
     length = 0
-    for i,j in zip(route[:-1], route[1:]):
+    for i, j in zip(route[:-1], route[1:]):
         length += my_euclid_dist(address[i], address[j])
     finish = my_euclid_dist(address[route[-1]], address[0])
     result = start + length + finish
@@ -38,7 +38,7 @@ def my_answer_writer(route, address=address):
     res_route.append(0)
     string = f'({address[res_route[0]][0]}, {address[res_route[0]][1]})'
 
-    for i,j in zip(res_route[:-1], res_route[1:]):
+    for i, j in zip(res_route[:-1], res_route[1:]):
         length += my_euclid_dist(address[i], address[j])
         string += f' -> ({address[j][0]}, {address[j][1]})[{length}]'
 
@@ -46,14 +46,15 @@ def my_answer_writer(route, address=address):
     res_string = string + finish_string
     return res_string
 
+
 # print(my_answer_writer.__doc__)
 # print(my_euclid_dist.__doc__)
 # print(my_route_length.__doc__)
 
-L = len(address) - 1 # количество промежуточных пунктов (само здание почты не считаем)
-all_routes = list(permutations(list(range(1,L+1)),L))   # все 24 варианта маршрута
-                                                        # первый и последний пункт - почта,
-                                                        # его мы по умолчанию не указываем
+L = len(address) - 1  # количество промежуточных пунктов (само здание почты не считаем)
+all_routes = list(permutations(list(range(1,L+1)),L))  # все 24 варианта маршрута
+                                                       # первый и последний пункт - почта,
+                                                       # его мы по умолчанию не указываем
 
 min_dist = inf
 min_index = -1
