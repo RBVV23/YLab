@@ -52,13 +52,12 @@ def my_answer_writer(route, address=address):
 # print(my_route_length.__doc__)
 
 L = len(address) - 1  # количество промежуточных пунктов (само здание почты не считаем)
-all_routes = list(permutations(list(range(1,L+1)),L))  # все 24 варианта маршрута
-                                                       # первый и последний пункт - почта,
-                                                       # его мы по умолчанию не указываем
+all_routes = list(permutations(list(range(1, L+1)), L))  # все 24 варианта маршрута
+# первый и последний пункты маршрута - почта, их мы по умолчанию не указываем
 
 min_dist = inf
 min_index = -1
-for i,route in enumerate(all_routes):
+for i, route in enumerate(all_routes):
     dist = my_route_length(route)
     if min_dist > dist:
         min_dist = dist
