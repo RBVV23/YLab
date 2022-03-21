@@ -1,11 +1,13 @@
 from itertools import permutations
 from math import inf
 
-address = ((0, 2),
-           (2, 5),
-            (5, 2),
-            (6, 6),
-            (8, 3))
+address = (
+    (0, 2),
+    (2, 5),
+    (5, 2),
+    (6, 6),
+    (8, 3)
+        )
 
 def my_euclid_dist(point_1, point_2):
     """Возвращает евклидово расстояния между точками на плоскости"""
