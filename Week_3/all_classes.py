@@ -28,7 +28,6 @@ class Builder():
 
             self.size = max(maxs - mins)
 
-
     def set_xy_limits(self):
         if self.figure.is_plan:
             plt.xlim(self.center[0] - self.size, self.center[0] + self.size)
@@ -37,7 +36,6 @@ class Builder():
             self.axes.set_xlim(self.center[0] - self.size, self.center[0] + self.size)
             self.axes.set_ylim(self.center[1] - self.size, self.center[1] + self.size)
             self.axes.set_zlim(self.center[2] - self.size, self.center[2] + self.size)
-
 
     def set_center_point(self):
         if self.figure.is_solid_of_revolution:
@@ -52,7 +50,6 @@ class Builder():
                 sums[i] /= points.shape[0]
 
             self.center = sums
-
 
     def to_draw(self):
         if self.figure.is_plan:
@@ -119,7 +116,6 @@ class Shape():
     def point_counter(self):
         return len(self.get_for_drawing())
 
-
     @staticmethod
     def print_pi():
         print(f'Значения констант, используемые при расчётах:\n\t\t {None}')
@@ -137,17 +133,16 @@ class PlanShape(Shape):
     border_lebesgue_measure_name = 'Периметр'
     is_plan = True
 
-
     def __init__(self):
         self.area = self.lebesgue_measure()
         self.perimeter = self.border_lebesgue_measure()
 
-    def lebesgue_measure(self): # площадь фигуры на плоскости
+    def lebesgue_measure(self):  # площадь фигуры на плоскости
         # self.area = -1
         print('Метод "PlanShape"')
         return -1
 
-    def border_lebesgue_measure(self): #  периметр плоской на плоскости
+    def border_lebesgue_measure(self):  # периметр плоской на плоскости
         # self.perimeter = -1
         print('Метод "PlanShape"')
         return -1
