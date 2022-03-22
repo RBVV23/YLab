@@ -421,7 +421,7 @@ class Cube(StereoShape):
         B_1 = B + [0, 0, self.a]
         C_1 = C + [0, 0, self.a]
         D_1 = D + [0, 0, self.a]
-        return np.array([A, B, C, D, A_1, B_1,C_1,D_1])
+        return np.array([A, B, C, D, A_1, B_1, C_1, D_1])
 
 
 class Cuboid(StereoShape):
@@ -429,6 +429,7 @@ class Cuboid(StereoShape):
     input_instructions = ['Введите ребро a: ',
                           'Введите ребро b: ',
                           'Введите ребро c: ']
+
     def __init__(self, parameters):
         self.a = parameters[0]
         self.b = parameters[1]
@@ -447,16 +448,17 @@ class Cuboid(StereoShape):
         C = np.array([0, self.b, 0])
         D = np.array([self.a, self.b, 0])
 
-        A_1 = A + [0,0, self.h]
-        B_1 = B + [0,0, self.h]
-        C_1 = C + [0,0, self.h]
-        D_1 = D + [0,0, self.h]
-        return np.array([A,B,C,D, A_1,B_1,C_1,D_1])
+        A_1 = A + [0, 0, self.h]
+        B_1 = B + [0, 0, self.h]
+        C_1 = C + [0, 0, self.h]
+        D_1 = D + [0, 0, self.h]
+        return np.array([A, B, C, D, A_1, B_1, C_1, D_1])
 
 
 class RightTetrahedron(StereoShape):
     title = 'Right tetrahedron'
     input_instructions = ['Введите ребро a: ']
+
     def __init__(self, parameters):
         self.a = parameters[0]
         self.b = self.a
@@ -477,10 +479,16 @@ class RightTetrahedron(StereoShape):
         B = np.array([self.a, 0, 0])
         A = np.array([C[0]+self.a*cos(pi * self.alpha / 180), C[1]+self.a*sin(pi * self.alpha / 180), 0])
         h = sqrt(2/3)*self.a
-        Ort_center = np.array([2*C[0]+self.a*cos(pi * self.alpha / 360)/3, 2*C[1]+self.a*sin(pi * self.alpha / 360)/3, 0])
-        H = Ort_center + np.array([0,0,h])
+        Ort_center = np.array(
+            [
+                2*C[0]+self.a*cos(pi * self.alpha / 360)/3,
+                2*C[1]+self.a*sin(pi * self.alpha / 360)/3,
+                0
+            ]
+                            )
+        H = Ort_center + np.array([0, 0, h])
 
-        return np.array([A,B,C,H])
+        return np.array([A, B, C, H])
 
 
 class RightCylinder(StereoShape):
@@ -489,11 +497,11 @@ class RightCylinder(StereoShape):
                           'Введите высоту h: ']
     is_polyhedron = False
     is_solid_of_revolution = True
+
     def __init__(self, parameters):
         self.r = parameters[0]
         self.h = parameters[1]
         super().__init__()
-
 
     def lebesgue_measure(self):
         return round(pi*self.r*self.r*self.h, self.precision)
@@ -517,14 +525,12 @@ class RightCylinder(StereoShape):
 
         u = np.linspace(0, 2 * pi, dphi)
         dh = np.linspace(0, 1, dl)
-        x = np.outer(np.sin(u), np.ones(len(dh)))
-        y = np.outer(np.cos(u), np.ones(len(dh)))
 
         x = r * np.outer(np.sin(u), np.ones(len(dh)))
         y = r * np.outer(np.cos(u), np.ones(len(dh)))
         z = h * np.outer(np.ones(len(u)), dh)
 
-        return np.array([x,y,z])
+        return np.array([x, y, z])
 
     @staticmethod
     def print_pi():
@@ -537,15 +543,14 @@ class RightCone(StereoShape):
                           'Введите высоту h: ']
     is_polyhedron = False
     is_solid_of_revolution = True
+
     def __init__(self, parameters):
         self.r = parameters[0]
         self.h = parameters[1]
         super().__init__()
 
-
     def lebesgue_measure(self):
         return round(pi*self.r*self.r*self.h/3, self.precision)
-
 
     def border_lebesgue_measure(self):
         slant_height = sqrt(self.r**2 + self.h**2)
@@ -558,7 +563,6 @@ class RightCone(StereoShape):
         print(f'\tself.volume = {self.volume}')
         print(f'\tself.surface_area = {self.surface_area}')
 
-
     def get_for_drawing(self):
         dl = self.dl
         dphi = self.dphi
@@ -568,14 +572,12 @@ class RightCone(StereoShape):
 
         u = np.linspace(0, 2 * pi, dphi)
         dh = np.linspace(0, 1, dl)
-        x = np.outer(np.sin(u), np.ones(len(dh)))
-        y = np.outer(np.cos(u), np.ones(len(dh)))
 
         x = r * np.outer(np.sin(u), dh)
         y = r * np.outer(np.cos(u), dh)
         z = h * np.outer(np.ones(len(u)), dh)
 
-        return np.array([x,y,z])
+        return np.array([x, y, z])
 
     @staticmethod
     def print_pi():
