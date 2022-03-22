@@ -204,13 +204,14 @@ class Square(PlanShape):
         B = (0, A[1] + self.a)
         C = (B[0] + self.a, B[1])
         D = (C[0], C[1] - self.a)
-        return np.array([A,B,C,D])
+        return np.array([A, B, C, D])
 
 
 class Rectangle(PlanShape):
     title = 'Rectangle'
     input_instructions = ['Введите сторону a: ',
                           'Введите сторону b: ']
+
     def __init__(self, parameters):
         self.a = parameters[0]
         self.b = parameters[1]
@@ -225,21 +226,21 @@ class Rectangle(PlanShape):
         return round(2*(self.a + self.b), self.precision)
 
     def get_for_drawing(self):
-        A = (0,0)
+        A = (0, 0)
         B = (0, A[1] + self.b)
         C = (B[0] + self.a, B[1])
         D = (C[0], C[1] - self.b)
-        return np.array([A,B,C,D])
+        return np.array([A, B, C, D])
 
 
 class Disk(PlanShape):
     title = 'Disk'
     input_instructions = ['Введите радиус r: ']
     is_solid_of_revolution = True
+
     def __init__(self, parameters):
         self.r = parameters[0]
         super().__init__()
-
 
     def lebesgue_measure(self):
         return round(pi*self.r*self.r, self.precision)
