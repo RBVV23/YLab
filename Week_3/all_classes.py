@@ -200,7 +200,7 @@ class Square(PlanShape):
         return round(4*self.a, self.precision)
 
     def get_for_drawing(self):
-        A = (0,0)
+        A = (0, 0)
         B = (0, A[1] + self.a)
         C = (B[0] + self.a, B[1])
         D = (C[0], C[1] - self.a)
