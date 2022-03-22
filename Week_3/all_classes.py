@@ -286,10 +286,10 @@ class Triangle(PlanShape):
         # print(f'\tself.gamma = {self.gamma}')
 
     def get_for_drawing(self):
-        C = (0,0)
+        C = (0, 0)
         B = (C[0] + self.a, C[1])
         A = (C[0] + self.b*cos(pi*self.alpha/180), C[1] + self.b*sin(pi*self.alpha/180))
-        return np.array([A,B,C])
+        return np.array([A, B, C])
 
 
 class Trapezoid(PlanShape):
@@ -298,6 +298,7 @@ class Trapezoid(PlanShape):
                           'Введите основание b: ',
                           'Введите боковую сторону c: ',
                           'Введите острый угол \u03B1: ']
+
     def __init__(self, parameters):
         self.a = max(parameters[0],parameters[1])
         self.b = min(parameters[0],parameters[1])
@@ -323,7 +324,7 @@ class Trapezoid(PlanShape):
         B = (A[0] + self.a, 0)
         D = (A[0] + self.c*cos(pi*self.alpha/180), A[1] + self.c*sin(pi*self.alpha/180))
         C = (D[0] + self.b, D[1])
-        return np.array([A,B,C,D])
+        return np.array([A, B, C, D])
 
 
 class StereoShape(Shape):
@@ -338,11 +339,11 @@ class StereoShape(Shape):
         self.volume = self.lebesgue_measure()
         self.surface_area = self.border_lebesgue_measure()
 
-    def lebesgue_measure(self): # объем фигуры в пространстве
+    def lebesgue_measure(self):  # объем фигуры в пространстве
         print('Метод "StereoShape"')
         return -1
 
-    def border_lebesgue_measure(self): #  площадь поверхности фигуры в пространстве
+    def border_lebesgue_measure(self):  # площадь поверхности фигуры в пространстве
         print('Метод "StereoShape"')
         return -1
 
@@ -360,10 +361,10 @@ class Ball(StereoShape):
     input_instructions = ['Введите радиус r: ']
     is_polyhedron = False
     is_solid_of_revolution = True
+
     def __init__(self, parameters):
         self.r = parameters[0]
         super().__init__()
-
 
     def lebesgue_measure(self):
         return round(4*pi*self.r*self.r*self.r/3, self.precision)
@@ -397,12 +398,12 @@ class Ball(StereoShape):
 class Cube(StereoShape):
     title = 'Cube'
     input_instructions = ['Введите ребро a: ']
+
     def __init__(self, parameters):
         self.a = parameters[0]
         self.b = self.a
         self.h = self.a
         super().__init__()
-
 
     def lebesgue_measure(self):
         return round(self.a*self.a*self.a, self.precision)
@@ -416,11 +417,11 @@ class Cube(StereoShape):
         C = np.array([0, self.a, 0])
         D = np.array([self.a, self.a, 0])
 
-        A_1 = A + [0,0, self.a]
-        B_1 = B + [0,0, self.a]
-        C_1 = C + [0,0, self.a]
-        D_1 = D + [0,0, self.a]
-        return np.array([A,B,C,D, A_1,B_1,C_1,D_1])
+        A_1 = A + [0, 0, self.a]
+        B_1 = B + [0, 0, self.a]
+        C_1 = C + [0, 0, self.a]
+        D_1 = D + [0, 0, self.a]
+        return np.array([A, B, C, D, A_1, B_1,C_1,D_1])
 
 
 class Cuboid(StereoShape):
