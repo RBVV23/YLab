@@ -160,6 +160,7 @@ class Rhombus(PlanShape):
     title = 'Rhombus'
     input_instructions = ['Введите сторону a: ',
                           'Введите угол \u03B1: ']
+
     def __init__(self, parameters):
         self.a = parameters[0]
         self.b = self.a
@@ -167,32 +168,30 @@ class Rhombus(PlanShape):
         self.betta = 180 - self.alpha
         super().__init__()
 
-
     def lebesgue_measure(self):
         return round(self.a*self.b*sin(pi*self.alpha/180), self.precision)
 
     def border_lebesgue_measure(self):
         return round(2*(self.a + self.b), self.precision)
 
-
     def get_for_drawing(self):
-        A = (0,0)
+        A = (0, 0)
         B = (A[0] + self.a, 0)
         D = (A[0] + self.b*cos(pi*self.alpha/180), A[1] + self.b*sin(pi*self.alpha/180))
         C = (D[0] + self.a, D[1])
-        return np.array([A,B,C,D])
+        return np.array([A, B, C, D])
 
 
 class Square(PlanShape):
     title = 'Square'
     input_instructions = ['Введите сторону a: ']
+
     def __init__(self, parameters):
         self.a = parameters[0]
         self.b = self.a
         self.alpha = 90
         self.betta = 180 - self.alpha
         super().__init__()
-
 
     def lebesgue_measure(self):
         return round(self.a*self.a, self.precision)
