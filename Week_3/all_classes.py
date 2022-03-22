@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
+
 class Builder():
     def __init__(self, figure, height=6, width=6):
         self.drawing = plt.figure(figsize=(height, width))
