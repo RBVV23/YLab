@@ -93,8 +93,6 @@ def show_results(Figure):
     result_screen.get_tk_widget().grid(column=3, row=0, rowspan=9, columnspan=9)
 
 
-
-
 window.title('Добро пожаловать в приложение "Геометрический калькулятор на костылях"!')
 
 font = ("Arial", 18, "normal")
@@ -116,4 +114,3 @@ choose_figure_btn = Button(window, text="Выбрать\nфигуру", command=
 choose_figure_btn.grid(column=1, row=0)
 
 window.mainloop()
-
