@@ -40,7 +40,6 @@ def choose_mode():
     text = f'Текущий класс: {FigureType.title}'
     lbl.configure(text=text)
 
-
     for n, instruction in enumerate(FigureType.input_instructions):
         entry_instruction_lbls[n].configure(text=instruction)
         input_ents[n].configure(state='normal')
@@ -87,13 +86,11 @@ def show_results(Figure):
     result_lbl_2 = Label(window, text=Figure.lebesgue_measure(), height=2, width=10, font='Arial 18')
     result_lbl_2.grid(column=1, row=7)
 
-
     fig = Builder(Figure)
     fig.to_draw()
 
     result_screen = FigureCanvasTkAgg(fig.drawing, master=window)
     result_screen.get_tk_widget().grid(column=3, row=0, rowspan=9, columnspan=9)
-
 
 
 window.title('Добро пожаловать в приложение "Геометрический калькулятор на костылях"!')
