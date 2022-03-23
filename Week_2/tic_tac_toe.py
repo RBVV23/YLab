@@ -136,5 +136,3 @@ while True:
     else:
         CURRENT_PLAYER_MARK = switch_player(CURRENT_PLAYER_MARK)
     clear_screen()
-
-
