@@ -8,7 +8,7 @@ from math import log10, ceil
 LOOSE_CONDITION = 5
 SIZE_BOARD = 10
 PLAY_BOARD = [str(num) for num in range(1, 1+SIZE_BOARD**2)]
-PLAYERS_MARKS = tuple(['X','O'])
+PLAYERS_MARKS = tuple(['X', 'O'])
 
 
 CELL_BOARD = '-'*ceil(2*log10(SIZE_BOARD))
@@ -211,6 +211,7 @@ def mark_change(mark):
     else:
         return PLAYERS_MARKS[0]
 
+
 def switch_player(old_player, old_mark):
     """Switches players to play next turn."""
 
@@ -229,12 +230,14 @@ def player_input():
 
     return HUMAN_MARK, PC_MARK
 
+
 def to_paint_marks(mark):
     if mark == PLAYERS_MARKS[0]:
         mark_painted = '\033[31m X  \033[00m'
     else:
         mark_painted = '\033[34m O  \033[00m'
     return mark_painted
+
 
 def choose_first():
     """Randomly returns the player that goes first."""
