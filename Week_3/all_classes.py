@@ -267,6 +267,7 @@ class Triangle(PlanShape):
     input_instructions = ['Введите сторону a: ',
                           'Введите сторону b: ',
                           'Введите угол \u03B1: ']
+
     def __init__(self, parameters):
         self.a = parameters[0]
         self.b = parameters[1]
