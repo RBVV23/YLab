@@ -283,8 +283,6 @@ class Triangle(PlanShape):
 
     def info(self):
         super().info()
-        # print(f'\tself.c = {self.c}')
-        # print(f'\tself.gamma = {self.gamma}')
 
     def get_for_drawing(self):
         C = (0, 0)
