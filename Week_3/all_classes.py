@@ -338,7 +338,7 @@ class StereoShape(Shape):
         self.volume = self.lebesgue_measure()
         self.surface_area = self.border_lebesgue_measure()
 
-    def lebesgue_measure(self):  # объем фигуры в пространстве
+    def lebesgue_measure(self):  # объём фигуры в пространстве
         print('Метод "StereoShape"')
         return -1
 
