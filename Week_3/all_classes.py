@@ -328,7 +328,7 @@ class Trapezoid(PlanShape):
 
 class StereoShape(Shape):
     title = 'StereoShape'
-    lebesgue_measure_name = 'Объем'
+    lebesgue_measure_name = 'Объём'
     border_lebesgue_measure_name = 'Площадь боковой поверхности'
     is_plan = False
     is_polyhedron = True
