@@ -114,3 +114,5 @@ choose_figure_btn = Button(window, text="Выбрать\nфигуру", command=
 choose_figure_btn.grid(column=1, row=0)
 
 window.mainloop()
+
+#1
